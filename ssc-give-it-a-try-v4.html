@@ -33,41 +33,6 @@ body {
   min-height: 100vh;
 }
 
-/* ── HEADER ── */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 28px;
-  height: 60px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  position: sticky; top: 0; z-index: 50;
-  flex-shrink: 0;
-}
-
-.ssc-logo {
-  background: var(--green);
-  color: white;
-  font-weight: 900;
-  font-size: 11px;
-  line-height: 1.35;
-  padding: 7px 10px;
-  border-radius: 6px;
-  transform: rotate(-1.5deg);
-  display: inline-block;
-  letter-spacing: 0.01em;
-}
-
-.step-ind {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-/* ── PROGRESS ── */
-.prog-rail { height: 3px; background: var(--border); flex-shrink: 0; }
-.prog-fill { height: 100%; background: var(--green); transition: width 0.4s ease; width: 0%; }
 
 /* ── SCREEN SYSTEM ── */
 .screen { display: none; }
@@ -424,20 +389,15 @@ select.field-input {
   .card { padding: 28px 22px; }
   .two-up { grid-template-columns: 1fr; }
   .chips { grid-template-columns: 1fr 1fr; }
-  .header { padding: 0 16px; }
-  .confirm-top { padding: 28px 22px; }
+.confirm-top { padding: 28px 22px; }
   .confirm-body { padding: 20px 22px 28px; }
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="ssc-logo">Smart<br>School<br>Councils</div>
-  <div class="step-ind" id="step-ind"></div>
-</header>
-<div class="prog-rail"><div class="prog-fill" id="pbar"></div></div>
+<div id="step-ind" style="display:none"></div>
+<div id="pbar" style="display:none"></div>
 
 <!-- ═══ S1: WHO ARE YOU ═══ -->
 <div class="screen active" id="s1">
