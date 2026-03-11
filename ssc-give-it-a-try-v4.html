@@ -720,6 +720,7 @@ const QB = {
 function goTo(id, step, total) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  if (id === 's2t2') resetS2t2();
   window.scrollTo(0,0);
   const pct = total ? ((step-1)/total)*100 : 0;
   document.getElementById('pbar').style.width = pct + '%';
