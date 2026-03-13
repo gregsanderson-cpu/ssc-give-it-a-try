@@ -306,12 +306,15 @@ select.field-input {
 .c-lbl { color: var(--muted); font-weight: 800; text-transform: uppercase; font-size: 11px; letter-spacing: 0.08em; width: 72px; flex-shrink: 0; padding-top: 1px; }
 .c-val { font-weight: 700; color: var(--ink); line-height: 1.4; }
 
-.confirm-links {
-  text-align: center; padding-top: 20px;
-  display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+.confirm-actions {
+  display: flex; flex-direction: column; gap: 10px; padding-top: 20px;
 }
-.confirm-links a { font-size: 14px; color: var(--green); text-decoration: none; font-weight: 800; }
-.confirm-links a:hover { text-decoration: underline; }
+.confirm-actions .btn { text-decoration: none; }
+.confirm-back {
+  text-align: center; font-size: 13px; color: var(--muted); text-decoration: none;
+  font-weight: 600; padding-top: 4px;
+}
+.confirm-back:hover { color: var(--ink); }
 
 .card-confirm { padding: 0; overflow: hidden; }
 
@@ -618,16 +621,17 @@ select.field-input {
 <div class="screen" id="s7">
   <div class="card card-confirm">
     <div class="confirm-top">
-      <span class="confirm-emoji">📬</span>
+      <span class="confirm-emoji">🎉</span>
       <h2>On its way, <span id="c-name"></span>!</h2>
-      <p>Check your inbox. It should arrive in the next few minutes.</p>
+      <p>Your Class Meeting is heading to your inbox now.</p>
     </div>
     <div class="confirm-body">
       <div class="confirm-row"><span class="c-lbl">Question</span><span class="c-val" id="c-q"></span></div>
       <div class="confirm-row"><span class="c-lbl">Sent to</span><span class="c-val" id="c-email"></span></div>
-      <div class="confirm-links">
-        <a href="https://smartschoolcouncils.org/for-schools#join" target="_blank">Join today →</a>
-        <a href="https://calendly.com/smart-school-councils/quick-chat-with-the-ssc-membership-team" target="_blank">Book a 15-min chat</a>
+      <div class="confirm-actions">
+        <a class="btn btn-green" href="https://smartschoolcouncils.org/webinars" target="_blank">See our webinars →</a>
+        <a class="btn btn-ghost" href="https://calendly.com/smart-school-councils/quick-chat-with-the-ssc-membership-team" target="_blank">Book a free chat</a>
+        <a class="confirm-back" href="https://smartschoolcouncils.org" target="_blank">Back to Smart School Councils</a>
       </div>
     </div>
   </div>
