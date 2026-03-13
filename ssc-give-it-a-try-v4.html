@@ -195,6 +195,7 @@ select.field-input {
   padding: 3px 8px; border-radius: 100px; flex-shrink: 0;
 }
 .q-text { font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; }
+.q-rec { font-size: 10px; font-weight: 800; color: #b45309; background: #fffbeb; border: 1px solid #fde68a; padding: 3px 8px; border-radius: 100px; flex-shrink: 0; }
 
 /* ── FSM ── */
 .fsm-wrap { margin-top: 8px; }
@@ -662,47 +663,47 @@ const S = { role:'', schoolName:'', schoolType:'', childYear:'', topics:[], ques
 
 const QB = {
   british_values: [
-    {q:"Should pupils have a say in the rules that govern their school?", tag:"British Values"},
+    {q:"Should pupils have a say in the rules that govern their school?", tag:"British Values", rec:true},
     {q:"How can our school better celebrate the different cultures and backgrounds in our community?", tag:"British Values"},
     {q:"Should learning about democracy be compulsory in every school?", tag:"British Values"},
   ],
   oracy: [
-    {q:"Should every pupil be given a speaking and listening lesson every week?", tag:"Oracy"},
+    {q:"Should every pupil be given a speaking and listening lesson every week?", tag:"Oracy", rec:true},
     {q:"Does it matter how you speak, or just what you say?", tag:"Oracy"},
     {q:"Should debate and public speaking be taught in every school?", tag:"Oracy"},
   ],
   smsc: [
-    {q:"What does it mean to be a good person, and can school teach you that?", tag:"SMSC"},
+    {q:"What does it mean to be a good person, and can school teach you that?", tag:"SMSC", rec:true},
     {q:"Should our school do more to help pupils understand different religions and beliefs?", tag:"SMSC"},
     {q:"How can we make our school a place where everyone feels they matter?", tag:"SMSC"},
   ],
   wellbeing: [
-    {q:"Should our school have a wellbeing day where pupils choose what they do?", tag:"Wellbeing"},
+    {q:"Should our school have a wellbeing day where pupils choose what they do?", tag:"Wellbeing", rec:true},
     {q:"How could our school better support pupils who feel anxious or stressed?", tag:"Wellbeing"},
     {q:"Should there be more unstructured time in the school day?", tag:"Wellbeing"},
   ],
   environment: [
-    {q:"What's the single most important thing our school could do for the environment?", tag:"Environment"},
+    {q:"What's the single most important thing our school could do for the environment?", tag:"Environment", rec:true},
     {q:"Should our school go completely plastic-free?", tag:"Environment"},
     {q:"Should pupils help look after a patch of school grounds?", tag:"Environment"},
   ],
   debate: [
-    {q:"Should homework be optional?", tag:"Debate"},
+    {q:"Should homework be optional?", tag:"Debate", rec:true},
     {q:"Is social media doing more harm than good for young people?", tag:"Debate"},
     {q:"Should the voting age be lowered to 16?", tag:"Debate"},
   ],
   philosophy: [
-    {q:"Is it ever okay to break a rule if you think it's unfair?", tag:"Philosophy"},
+    {q:"Is it ever okay to break a rule if you think it's unfair?", tag:"Philosophy", rec:true},
     {q:"Does it matter if something is true, as long as it makes people happy?", tag:"Philosophy"},
     {q:"If everyone has different opinions, can anything really be right or wrong?", tag:"Philosophy"},
   ],
   community: [
-    {q:"How can our school make sure every pupil feels they belong?", tag:"Community"},
+    {q:"How can our school make sure every pupil feels they belong?", tag:"Community", rec:true},
     {q:"Should older pupils help teach younger ones?", tag:"Community"},
     {q:"What could we do to make new pupils feel more welcome?", tag:"Community"},
   ],
   change: [
-    {q:"What one thing would you change about our school if you could?", tag:"Change"},
+    {q:"What one thing would you change about our school if you could?", tag:"Change", rec:true},
     {q:"Should pupils be involved in choosing how the school budget is spent?", tag:"Change"},
     {q:"What would make our school council more powerful?", tag:"Change"},
   ],
@@ -758,7 +759,7 @@ function buildQs() {
   qs.slice(0,5).forEach(item => {
     const btn = document.createElement('button');
     btn.className = 'q-row';
-    btn.innerHTML = `<span class="q-tag">${item.tag}</span><span class="q-text">${item.q}</span>`;
+    btn.innerHTML = `<span class="q-tag">${item.tag}</span>${item.rec ? '<span class="q-rec">⭐ Recommended</span>' : ''}<span class="q-text">${item.q}</span>`;
     btn.onclick = () => {
       document.querySelectorAll('.q-row').forEach(b=>b.classList.remove('on'));
       btn.classList.add('on');
