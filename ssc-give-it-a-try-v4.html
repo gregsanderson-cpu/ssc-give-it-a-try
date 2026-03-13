@@ -218,10 +218,10 @@ select.field-input {
 .fsm-row {
   border: 2px solid var(--border);
   border-radius: var(--radius);
-  padding: 14px 16px;
+  padding: 11px 14px;
   cursor: pointer;
   transition: all 0.15s;
-  display: flex; gap: 10px; align-items: flex-start;
+  display: flex; gap: 10px; align-items: center;
 }
 .fsm-row:hover { border-color: var(--green); }
 .fsm-row.on { border-color: var(--green); background: var(--green-bg); }
@@ -233,9 +233,8 @@ select.field-input {
   font-size: 11px; font-weight: 900; transition: all 0.15s;
 }
 .fsm-row.on .fsm-box { background: var(--green); border-color: var(--green); color: white; }
-.fsm-text { font-size: 13px; line-height: 1.5; color: var(--mid); font-weight: 600; }
-.fsm-text strong { display: block; font-weight: 800; color: var(--ink); margin-bottom: 2px; font-size: 13px; }
-.fsm-hint { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.fsm-text { font-size: 13px; line-height: 1.4; color: var(--ink); font-weight: 700; }
+.fsm-sub { font-weight: 500; color: var(--mid); }
 .selected-q {
   background: var(--green-bg);
   border: 1px solid var(--green-border);
@@ -603,14 +602,9 @@ select.field-input {
       <input class="field-input" id="email" type="email" placeholder="you@school.org.uk" oninput="chkLead()">
     </div>
     <div class="fsm-wrap">
-      <div class="field-label">Free school meals</div>
-      <div class="fsm-hint">Schools where 20%+ of pupils qualify for free school meals may be eligible for a subsidised place.</div>
       <div class="fsm-row" id="fsm-row" onclick="toggleFsm()">
         <div class="fsm-box" id="fsm-box"></div>
-        <div class="fsm-text">
-          <strong>Our school has a high free school meals %</strong>
-          Over 20% of our pupils are eligible for free school meals
-        </div>
+        <div class="fsm-text">30%+ of pupils eligible for free school meals<span class="fsm-sub"> — may qualify for a subsidised place</span></div>
       </div>
     </div>
     <div style="height:20px"></div>
