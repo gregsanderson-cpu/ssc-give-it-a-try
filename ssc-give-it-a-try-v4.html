@@ -195,6 +195,12 @@ select.field-input {
   padding: 3px 8px; border-radius: 100px; flex-shrink: 0;
 }
 .q-text { font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; }
+.q-preview {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.q-preview.open { max-height: 320px; }
+.q-preview img { width: 100%; border-radius: 8px; display: block; margin-top: 6px; }
 
 /* ── FSM ── */
 .fsm-wrap { margin-top: 8px; }
@@ -756,16 +762,24 @@ function buildQs() {
   const seen = new Set(), qs = [];
   S.topics.forEach(t => (QB[t]||[]).forEach(q => { if(!seen.has(q.q)){seen.add(q.q);qs.push(q);} }));
   qs.slice(0,5).forEach(item => {
+    const wrapper = document.createElement('div');
     const btn = document.createElement('button');
     btn.className = 'q-row';
     btn.innerHTML = `<span class="q-tag">${item.rec ? '⭐ ' : ''}${item.tag}</span><span class="q-text">${item.q}</span>`;
+    const preview = document.createElement('div');
+    preview.className = 'q-preview';
+    preview.innerHTML = `<img src="class-meeting-preview.jpg" alt="Class meeting preview">`;
     btn.onclick = () => {
       document.querySelectorAll('.q-row').forEach(b=>b.classList.remove('on'));
+      document.querySelectorAll('.q-preview').forEach(p=>p.classList.remove('open'));
       btn.classList.add('on');
+      preview.classList.add('open');
       S.question = item.q;
       document.getElementById('btn5').disabled = false;
     };
-    list.appendChild(btn);
+    wrapper.appendChild(btn);
+    wrapper.appendChild(preview);
+    list.appendChild(wrapper);
   });
 }
 
