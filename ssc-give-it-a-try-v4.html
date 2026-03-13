@@ -175,7 +175,7 @@ select.field-input {
 .q-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
 
 .q-item {
-  border: 2px solid var(--border);
+  border: 2px solid transparent;
   border-radius: var(--radius);
   overflow: hidden;
   transition: border-color 0.15s;
@@ -183,16 +183,19 @@ select.field-input {
 .q-item:hover { border-color: var(--green); }
 .q-item.on { border-color: var(--green); }
 .q-row {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
   padding: 14px 16px;
   cursor: pointer;
   background: var(--surface);
-  transition: background 0.15s;
+  transition: background 0.15s, border-color 0.15s;
   font-family: 'Nunito', sans-serif;
   display: flex; align-items: center; gap: 10px;
   width: 100%; text-align: left;
 }
-.q-item:hover .q-row { background: var(--green-bg); }
-.q-item.on .q-row { background: var(--green-bg); }
+.q-item:hover .q-row { border-color: var(--green); background: var(--green-bg); }
+.q-item.on .q-row { border-color: var(--green); background: var(--green-bg); border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+.q-item.on { border-color: var(--green); }
 
 .q-tag {
   font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
@@ -780,12 +783,18 @@ function buildQs() {
     preview.className = 'q-preview';
     preview.innerHTML = `<div><img src="class-meeting-preview.jpg" alt="Class meeting preview"></div>`;
     btn.onclick = () => {
+      const isOpen = wrapper.classList.contains('on');
       document.querySelectorAll('.q-item').forEach(w=>w.classList.remove('on'));
       document.querySelectorAll('.q-preview').forEach(p=>p.classList.remove('open'));
-      wrapper.classList.add('on');
-      preview.classList.add('open');
-      S.question = item.q;
-      document.getElementById('btn5').disabled = false;
+      if (!isOpen) {
+        wrapper.classList.add('on');
+        preview.classList.add('open');
+        S.question = item.q;
+        document.getElementById('btn5').disabled = false;
+      } else {
+        S.question = '';
+        document.getElementById('btn5').disabled = true;
+      }
     };
     wrapper.appendChild(btn);
     wrapper.appendChild(preview);
