@@ -235,6 +235,18 @@ select.field-input {
 .fsm-row.on .fsm-box { background: var(--green); border-color: var(--green); color: white; }
 .fsm-text { font-size: 13px; line-height: 1.5; color: var(--mid); font-weight: 600; }
 .fsm-text strong { display: block; font-weight: 800; color: var(--ink); margin-bottom: 2px; font-size: 13px; }
+.fsm-hint { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.selected-q {
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
 
 /* ── BUTTONS ── */
 .btn {
@@ -432,12 +444,12 @@ select.field-input {
     <h1 class="title">Are you a teacher or a parent?</h1>
     <p class="subtitle">We'll find the right example for you.</p>
     <div class="two-up">
-      <button class="role-btn" onclick="pick('role','teacher'); goTo('s2t',2,9)">
+      <button class="role-btn" onclick="pick('role','teacher'); goTo('s2t',2,7)">
         <span class="role-icon">🏫</span>
         <span class="role-label">Teacher</span>
         <span class="role-sub">I work in a school</span>
       </button>
-      <button class="role-btn" onclick="pick('role','parent'); goTo('s2p',2,8)">
+      <button class="role-btn" onclick="pick('role','parent'); goTo('s2p',2,6)">
         <span class="role-icon">🏠</span>
         <span class="role-label">Parent</span>
         <span class="role-sub">I have a child at school</span>
@@ -452,8 +464,8 @@ select.field-input {
     <div class="eyebrow">For schools</div>
     <h1 class="title">We think pupil voice should be led by pupils.</h1>
     <p class="subtitle">And involve everyone's voice.</p>
-    <button class="btn btn-green" onclick="goTo('s2t_bridge',3,9)">Show me how →</button>
-    <button class="btn btn-ghost" onclick="goTo('s1',1,9)">← Back</button>
+    <button class="btn btn-green" onclick="goTo('s2t_bridge',3,7)">Show me how →</button>
+    <button class="btn btn-ghost" onclick="goTo('s1',1,7)">← Back</button>
   </div>
 </div>
 
@@ -467,8 +479,8 @@ select.field-input {
       <img src="roby-park-tweet.jpg" alt="Tweet from Year 6 @ Roby Park Primary about their Smart School Council meeting" style="width:100%;border-radius:12px 12px 0 0;display:block;">
       <div style="background:#f7f7f7;border-radius:0 0 12px 12px;padding:8px 12px;font-size:13px;color:#666;font-style:italic;">Year 6, Roby Park Primary School</div>
     </div>
-    <button class="btn btn-green" onclick="goTo('s2t2',4,9)">Tell me more →</button>
-    <button class="btn btn-ghost" onclick="goTo('s2t',2,9)">← Back</button>
+    <button class="btn btn-green" onclick="goTo('s2t2',4,7)">Tell me more →</button>
+    <button class="btn btn-ghost" onclick="goTo('s2t',2,7)">← Back</button>
   </div>
 </div>
 
@@ -490,8 +502,8 @@ select.field-input {
       </li>
     </ul>
 
-    <button class="btn btn-green" onclick="goTo('s4',4,9)">Show me how →</button>
-    <button class="btn btn-ghost" onclick="goTo('s2t_bridge',3,9)">← Back</button>
+    <button class="btn btn-green" onclick="goTo('s4',4,7)">Show me how →</button>
+    <button class="btn btn-ghost" onclick="goTo('s2t_bridge',3,7)">← Back</button>
   </div>
 </div>
 
@@ -501,8 +513,8 @@ select.field-input {
     <div class="eyebrow">For families</div>
     <h1 class="title">Your child has more to say than you think.</h1>
     <p class="subtitle">Big Debate Club sends a short debate video to watch and discuss at home. 10 minutes. No pressure. Just a child getting used to the sound of their own voice.</p>
-    <button class="btn btn-green" onclick="goTo('s3p',3,8)">That sounds good →</button>
-    <button class="btn btn-ghost" onclick="goTo('s1',1,8)">← Back</button>
+    <button class="btn btn-green" onclick="goTo('s3p',3,6)">That sounds good →</button>
+    <button class="btn btn-ghost" onclick="goTo('s1',1,6)">← Back</button>
   </div>
 </div>
 
@@ -523,7 +535,7 @@ select.field-input {
       <button class="chip" onclick="toggleChip(this,'community')"><span class="chip-emoji">🤝</span><span class="chip-name">Community</span><span class="chip-check"></span></button>
       <button class="chip" onclick="toggleChip(this,'change')"><span class="chip-emoji">✊</span><span class="chip-name">Change</span><span class="chip-check"></span></button>
     </div>
-    <button class="btn btn-green" id="btn4" disabled onclick="buildQs(); goTo('s5',5,S.role==='teacher'?9:8)">See questions →</button>
+    <button class="btn btn-green" id="btn4" disabled onclick="buildQs(); goTo('s5',5,S.role==='teacher'?7:6)">See questions →</button>
     <button class="btn btn-ghost" id="btn4back" onclick="backS4()">← Back</button>
   </div>
 </div>
@@ -535,34 +547,10 @@ select.field-input {
     <h1 class="title">Pick a question to try with your class</h1>
     <div class="q-list" id="q-list"></div>
     <button class="btn btn-green" id="btn5" disabled onclick="goToAfterQ()">That's the one →</button>
-    <button class="btn btn-ghost" onclick="goTo('s4',4,S.role==='teacher'?9:8)">← Back</button>
+    <button class="btn btn-ghost" onclick="goTo('s4',4,S.role==='teacher'?7:6)">← Back</button>
   </div>
 </div>
 
-<!-- ═══ S3T: SCHOOL DETAILS ═══ -->
-<div class="screen" id="s3t">
-  <div class="card">
-    <div class="eyebrow">Your school</div>
-    <h1 class="title">Tell us about your school.</h1>
-    <div class="field">
-      <label class="field-label" for="school-name">School name</label>
-      <input class="field-input" id="school-name" type="text" placeholder="e.g. Greenfield Primary" oninput="chk3t()">
-    </div>
-    <div class="field">
-      <label class="field-label" for="school-type">Type of school</label>
-      <select class="field-input" id="school-type" onchange="chk3t()">
-        <option value="">Select…</option>
-        <option>Primary</option>
-        <option>Secondary</option>
-        <option>SEN / PRU</option>
-        <option>Primary (Independent)</option>
-        <option>Secondary (Independent)</option>
-      </select>
-    </div>
-    <button class="btn btn-green" id="btn3t" disabled onclick="goTo('s6',8,9)">Next →</button>
-    <button class="btn btn-ghost" onclick="goTo('sprev',6,9)">← Back</button>
-  </div>
-</div>
 
 <!-- ═══ S3P: CHILD AGE ═══ -->
 <div class="screen" id="s3p">
@@ -580,80 +568,57 @@ select.field-input {
         <option>Year 10+ (ages 14+)</option>
       </select>
     </div>
-    <button class="btn btn-green" id="btn3p" disabled onclick="goTo('s4',4,8)">Next →</button>
-    <button class="btn btn-ghost" onclick="goTo('s2p',2,8)">← Back</button>
+    <button class="btn btn-green" id="btn3p" disabled onclick="goTo('s4',4,6)">Next →</button>
+    <button class="btn btn-ghost" onclick="goTo('s2p',2,6)">← Back</button>
   </div>
 </div>
 
-<!-- ═══ SPREV: PREVIEW ═══ -->
+<!-- ═══ SPREV: LEAD CAPTURE ═══ -->
 <div class="screen" id="sprev">
-  <div class="preview-card">
-    <div class="preview-header">
-      <span class="preview-badge">Class Meeting · Preview</span>
-      <span class="preview-label">Sample</span>
-    </div>
-    <div class="preview-body">
-      <div class="preview-q" id="prev-q"></div>
-      <div class="preview-votes">
-        <div class="vote-btn agree">
-          <span class="vote-emoji">👍</span>
-          <span class="vote-label">Agree</span>
-        </div>
-        <div class="vote-btn unsure">
-          <span class="vote-emoji">🤔</span>
-          <span class="vote-label">Unsure</span>
-        </div>
-        <div class="vote-btn disagree">
-          <span class="vote-emoji">👎</span>
-          <span class="vote-label">Disagree</span>
-        </div>
-      </div>
-      <div class="preview-points">
-        <div class="preview-points-title">Discussion prompts included</div>
-        <div class="preview-point"><span class="preview-dot"></span><span>Starter activity to open the conversation</span></div>
-        <div class="preview-point"><span class="preview-dot"></span><span>Guided talking points for every viewpoint</span></div>
-        <div class="preview-point"><span class="preview-dot"></span><span>Reflection cards for pupils to record their thinking</span></div>
-        <div class="preview-point"><span class="preview-dot"></span><span>Teacher facilitation notes included</span></div>
-      </div>
-    </div>
-    <div class="preview-footer">
-      <div class="preview-teaser">Get the full, ready-to-use Class Meeting for your school. Free.</div>
-      <button class="btn btn-green" onclick="goToAfterPreview()">Get the full version free →</button>
-      <button class="btn btn-ghost" onclick="goTo('s5', 5, S.role==='teacher' ? 9 : 8)">← Back</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ S6: EMAIL ═══ -->
-<div class="screen" id="s6">
   <div class="card">
-    <div class="eyebrow">Almost there</div>
-    <h1 class="title">Where shall we send it?</h1>
+    <div class="eyebrow">One last step</div>
+    <h1 class="title">We'll send your Class Meeting straight to your inbox</h1>
+    <div class="selected-q" id="prev-q"></div>
     <div class="field">
-      <label class="field-label" for="fname">First name</label>
-      <input class="field-input" id="fname" type="text" placeholder="Your first name" oninput="chk6()">
+      <label class="field-label" for="fname">Your first name</label>
+      <input class="field-input" id="fname" type="text" placeholder="e.g. Sarah" oninput="chkLead()">
+    </div>
+    <div class="field">
+      <label class="field-label" for="school-name">School name</label>
+      <input class="field-input" id="school-name" type="text" placeholder="e.g. Greenfield Primary" oninput="chkLead()">
+    </div>
+    <div class="field">
+      <label class="field-label" for="school-type">School type</label>
+      <select class="field-input" id="school-type" onchange="chkLead()">
+        <option value="">Select…</option>
+        <option>Primary</option>
+        <option>Secondary</option>
+        <option>SEN / PRU</option>
+        <option>Primary (Independent)</option>
+        <option>Secondary (Independent)</option>
+      </select>
     </div>
     <div class="field">
       <label class="field-label" for="email">Email address</label>
-      <input class="field-input" id="email" type="email" placeholder="you@school.org.uk" oninput="chk6()">
+      <input class="field-input" id="email" type="email" placeholder="you@school.org.uk" oninput="chkLead()">
     </div>
-    <div id="fsm-wrap" style="display:none">
-      <div class="fsm-wrap">
-        <div class="field-label">Subsidised places</div>
-        <div class="fsm-row" id="fsm-row" onclick="toggleFsm()">
-          <div class="fsm-box" id="fsm-box"></div>
-          <div class="fsm-text">
-            <strong>We have subsidised places available</strong>
-            Tick this if more than 20% of your pupils are eligible for free school meals. We may be able to offer a reduced price.
-          </div>
+    <div class="fsm-wrap">
+      <div class="field-label">Free school meals</div>
+      <div class="fsm-hint">Schools where 20%+ of pupils qualify for free school meals may be eligible for a subsidised place.</div>
+      <div class="fsm-row" id="fsm-row" onclick="toggleFsm()">
+        <div class="fsm-box" id="fsm-box"></div>
+        <div class="fsm-text">
+          <strong>Our school has a high free school meals %</strong>
+          Over 20% of our pupils are eligible for free school meals
         </div>
       </div>
     </div>
     <div style="height:20px"></div>
-    <button class="btn btn-green" id="btn6" disabled onclick="submit()">Send it to me →</button>
-    <button class="btn btn-ghost" onclick="backFromEmail()">← Back</button>
+    <button class="btn btn-green" id="btn-lead" disabled onclick="submit()">Send me the Class Meeting →</button>
+    <button class="btn btn-ghost" onclick="goTo('s5', 5, S.role==='teacher' ? 7 : 6)">← Back</button>
   </div>
 </div>
+
 
 <!-- ═══ S7: CONFIRM ═══ -->
 <div class="screen" id="s7">
@@ -736,21 +701,19 @@ function goTo(id, step, total) {
 
 function pick(k,v) { S[k]=v; }
 
-function backS4() { goTo(S.role==='teacher' ? 's2t2' : 's3p', 3, S.role==='teacher' ? 9 : 8); }
+function backS4() { goTo(S.role==='teacher' ? 's2t2' : 's3p', 3, S.role==='teacher' ? 7 : 6); }
 
-// After picking question: teachers go to school details, parents go to email
-function goToAfterQ() { document.getElementById('prev-q').textContent = S.question; goTo('sprev', 6, S.role==='teacher' ? 9 : 8); }
+// After picking question: go straight to lead capture form
+function goToAfterQ() { document.getElementById('prev-q').textContent = S.question; goTo('sprev', 6, S.role==='teacher' ? 7 : 6); }
 
-function goToAfterPreview() { goTo(S.role==='teacher' ? 's3t' : 's6', 7, S.role==='teacher' ? 9 : 8); }
-
-// Back from email: teachers go to school details, parents go to question
-function backFromEmail() { goTo(S.role==='teacher' ? 's3t' : 'sprev', S.role==='teacher' ? 7 : 6, S.role==='teacher' ? 9 : 8); }
-
-function chk3t() {
+function chkLead() {
+  S.firstName = document.getElementById('fname').value.trim();
   S.schoolName = document.getElementById('school-name').value.trim();
   S.schoolType = document.getElementById('school-type').value;
-  document.getElementById('btn3t').disabled = !(S.schoolName && S.schoolType);
+  S.email = document.getElementById('email').value.trim();
+  document.getElementById('btn-lead').disabled = !(S.firstName && S.schoolName && S.schoolType && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email));
 }
+
 function chk3p() {
   S.childYear = document.getElementById('child-year').value;
   document.getElementById('btn3p').disabled = !S.childYear;
@@ -769,7 +732,6 @@ function buildQs() {
   list.innerHTML = '';
   S.question = '';
   document.getElementById('btn5').disabled = true;
-  document.getElementById('fsm-wrap').style.display = S.role==='teacher' ? 'block' : 'none';
   const seen = new Set(), qs = [];
   S.topics.forEach(t => (QB[t]||[]).forEach(q => { if(!seen.has(q.q)){seen.add(q.q);qs.push(q);} }));
   qs.slice(0,5).forEach(item => {
@@ -807,12 +769,6 @@ function toggleFsm() {
   document.getElementById('fsm-box').textContent = S.fsm ? '✓' : '';
 }
 
-function chk6() {
-  S.firstName = document.getElementById('fname').value.trim();
-  S.email = document.getElementById('email').value.trim();
-  document.getElementById('btn6').disabled = !(S.firstName && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email));
-}
-
 function submit() {
   document.getElementById('c-name').textContent = S.firstName;
   document.getElementById('c-q').textContent = S.question;
@@ -821,7 +777,7 @@ function submit() {
   console.log('Submit:', payload);
   // TODO: POST to Google Apps Script webhook
   // TODO: POST to ActiveCampaign
-  goTo('s7', S.role==='teacher' ? 9 : 8, S.role==='teacher' ? 9 : 8);
+  goTo('s7', S.role==='teacher' ? 7 : 6, S.role==='teacher' ? 7 : 6);
   document.getElementById('pbar').style.width = '100%';
   document.getElementById('step-ind').textContent = '';
 }
