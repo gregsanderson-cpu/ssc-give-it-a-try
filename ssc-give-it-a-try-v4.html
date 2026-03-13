@@ -162,9 +162,7 @@ select.field-input {
 .chip.on { border-color: var(--green); background: var(--green-bg); }
 .chip.on .chip-check { background: var(--green); border-color: var(--green); color: white; }
 .chip-emoji { font-size: 15px; flex-shrink: 0; }
-.chip-info { display: flex; flex-direction: column; flex: 1; gap: 1px; }
-.chip-name { font-size: 12px; font-weight: 800; color: var(--ink); }
-.chip-rec { font-size: 10px; font-weight: 700; color: var(--green); }
+.chip-name { font-size: 12px; font-weight: 800; color: var(--ink); flex: 1; }
 .chip-check {
   width: 16px; height: 16px; border-radius: 50%;
   border: 2px solid var(--border);
@@ -498,15 +496,15 @@ select.field-input {
     <h1 class="title">What topic would you like to try?</h1>
     <p class="subtitle" style="margin-bottom:16px;">Pick as many as you like.</p>
     <div class="chips">
-      <button class="chip" onclick="toggleChip(this,'british_values')"><span class="chip-emoji">🇬🇧</span><div class="chip-info"><span class="chip-name">British Values</span><span class="chip-rec">⭐ Recommended</span></div><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'oracy')"><span class="chip-emoji">🎤</span><div class="chip-info"><span class="chip-name">Oracy</span><span class="chip-rec">⭐ Recommended</span></div><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'smsc')"><span class="chip-emoji">🌱</span><div class="chip-info"><span class="chip-name">SMSC</span><span class="chip-rec">⭐ Recommended</span></div><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'wellbeing')"><span class="chip-emoji">💚</span><div class="chip-info"><span class="chip-name">Wellbeing</span><span class="chip-rec">⭐ Recommended</span></div><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'environment')"><span class="chip-emoji">🌍</span><div class="chip-info"><span class="chip-name">Environment</span><span class="chip-rec">⭐ Recommended</span></div><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'debate')"><span class="chip-emoji">💬</span><div class="chip-info"><span class="chip-name">Debate</span><span class="chip-rec">⭐ Recommended</span></div><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'philosophy')"><span class="chip-emoji">🤔</span><div class="chip-info"><span class="chip-name">Philosophy</span><span class="chip-rec">⭐ Recommended</span></div><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'community')"><span class="chip-emoji">🤝</span><div class="chip-info"><span class="chip-name">Community</span><span class="chip-rec">⭐ Recommended</span></div><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'change')"><span class="chip-emoji">✊</span><div class="chip-info"><span class="chip-name">Change</span><span class="chip-rec">⭐ Recommended</span></div><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'british_values')"><span class="chip-emoji">🇬🇧</span><span class="chip-name">British Values</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'oracy')"><span class="chip-emoji">🎤</span><span class="chip-name">Oracy</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'smsc')"><span class="chip-emoji">🌱</span><span class="chip-name">SMSC</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'wellbeing')"><span class="chip-emoji">💚</span><span class="chip-name">Wellbeing</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'environment')"><span class="chip-emoji">🌍</span><span class="chip-name">Environment</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'debate')"><span class="chip-emoji">💬</span><span class="chip-name">Debate</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'philosophy')"><span class="chip-emoji">🤔</span><span class="chip-name">Philosophy</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'community')"><span class="chip-emoji">🤝</span><span class="chip-name">Community</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'change')"><span class="chip-emoji">✊</span><span class="chip-name">Change</span><span class="chip-check"></span></button>
     </div>
     <button class="btn btn-green" id="btn4" disabled onclick="buildQs(); goTo('s5',5,S.role==='teacher'?9:8)">See questions →</button>
     <button class="btn btn-ghost" id="btn4back" onclick="backS4()">← Back</button>
