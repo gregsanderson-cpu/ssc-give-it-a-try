@@ -33,6 +33,24 @@ body {
   min-height: 100vh;
 }
 
+/* ── LOGO HEADER ── */
+.site-header {
+  text-align: center;
+  padding: 18px 20px 14px;
+  flex-shrink: 0;
+}
+.site-header img {
+  height: 32px;
+  width: auto;
+  display: inline-block;
+}
+.site-logo-text {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--green);
+  letter-spacing: -0.01em;
+}
+
 
 /* ── SCREEN SYSTEM ── */
 .screen { display: none; }
@@ -42,8 +60,7 @@ body {
   align-items: center;
   justify-content: center;
   flex: 1;
-  min-height: calc(100vh - 63px);
-  padding: 40px 20px 64px;
+  padding: 24px 20px 40px;
   animation: up 0.28s ease both;
 }
 
@@ -126,7 +143,7 @@ body {
   border-radius: var(--radius);
   padding: 12px 14px;
   font-family: 'Nunito', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--ink);
   outline: none;
@@ -436,6 +453,11 @@ select.field-input {
 </head>
 <body>
 
+<header class="site-header">
+  <!-- swap the line below for <img src="your-logo.png" alt="Smart School Councils"> once you have the file -->
+  <span class="site-logo-text">Smart School Councils</span>
+</header>
+
 <div id="step-ind" style="display:none"></div>
 <div id="pbar" style="display:none"></div>
 
@@ -543,10 +565,11 @@ select.field-input {
 <!-- ═══ S5: PICK QUESTION ═══ -->
 <div class="screen" id="s5">
   <div class="card">
-    <div class="eyebrow">Pick your question</div>
-    <h1 class="title">Pick a question to try with your class</h1>
+    <div class="eyebrow">Choose your question</div>
+    <h1 class="title">Which question would you use with your class?</h1>
+    <p class="subtitle" style="margin-bottom:16px;">These match your chosen topics. Pick the one that fits best — you'll get the full Class Meeting built around it.</p>
     <div class="q-list" id="q-list"></div>
-    <button class="btn btn-green" id="btn5" disabled onclick="goToAfterQ()">That's the one →</button>
+    <button class="btn btn-green" id="btn5" disabled onclick="goToAfterQ()">I'd use this one →</button>
     <button class="btn btn-ghost" onclick="goTo('s4',4,S.role==='teacher'?7:6)">← Back</button>
   </div>
 </div>
