@@ -575,6 +575,44 @@ select.field-input {
   </div>
 </div>
 
+<!-- ═══ SPREVP: PARENT EMAIL CAPTURE ═══ -->
+<div class="screen" id="sprevp">
+  <div class="card">
+    <div class="eyebrow">Almost there</div>
+    <h1 class="title">We'll send you a debate to try every week</h1>
+    <div class="selected-q" id="prev-qp"></div>
+    <div class="field">
+      <label class="field-label" for="fname-p">Your first name</label>
+      <input class="field-input" id="fname-p" type="text" placeholder="e.g. Sarah" oninput="chkLeadP()">
+    </div>
+    <div class="field">
+      <label class="field-label" for="email-p">Email address</label>
+      <input class="field-input" id="email-p" type="email" placeholder="you@email.com" oninput="chkLeadP()">
+    </div>
+    <button class="btn btn-green" id="btn-leadp" disabled onclick="submitP()">Send me debates →</button>
+    <button class="btn btn-ghost" onclick="goTo('s5', 5, 6)">← Back</button>
+  </div>
+</div>
+
+<!-- ═══ S7P: PARENT CONFIRM ═══ -->
+<div class="screen" id="s7p">
+  <div class="card card-confirm">
+    <div class="confirm-top">
+      <span class="confirm-emoji">🎉</span>
+      <h2>You're in, <span id="cp-name"></span>!</h2>
+      <p>Your first debate is on its way to your inbox.</p>
+    </div>
+    <div class="confirm-body">
+      <div class="confirm-row"><span class="c-lbl">Question</span><span class="c-val" id="cp-q"></span></div>
+      <div class="confirm-row"><span class="c-lbl">Sent to</span><span class="c-val" id="cp-email"></span></div>
+      <div class="confirm-actions">
+        <a class="btn btn-green" href="https://bigdebate.club" target="_blank">Join Big Debate Club →</a>
+        <a class="confirm-back" href="https://smartschoolcouncils.org" target="_blank">Back to Smart School Councils</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ SPREV: LEAD CAPTURE ═══ -->
 <div class="screen" id="sprev">
   <div class="card">
@@ -701,8 +739,16 @@ function pick(k,v) { S[k]=v; }
 
 function backS4() { goTo(S.role==='teacher' ? 's2t2' : 's3p', 3, S.role==='teacher' ? 7 : 6); }
 
-// After picking question: go straight to lead capture form
-function goToAfterQ() { document.getElementById('prev-q').textContent = S.question; goTo('sprev', 6, S.role==='teacher' ? 7 : 6); }
+// After picking question: route by role
+function goToAfterQ() {
+  if (S.role === 'teacher') {
+    document.getElementById('prev-q').textContent = S.question;
+    goTo('sprev', 6, 7);
+  } else {
+    document.getElementById('prev-qp').textContent = S.question;
+    goTo('sprevp', 6, 6);
+  }
+}
 
 function chkLead() {
   S.firstName = document.getElementById('fname').value.trim();
@@ -730,6 +776,7 @@ function buildQs() {
   list.innerHTML = '';
   S.question = '';
   document.getElementById('btn5').disabled = true;
+  document.querySelector('#s5 h1').textContent = S.role === 'teacher' ? 'Pick a question to try with your class' : 'Pick a question to try at home';
   const seen = new Set(), qs = [];
   S.topics.forEach(t => (QB[t]||[]).forEach(q => { if(!seen.has(q.q)){seen.add(q.q);qs.push(q);} }));
   qs.slice(0,5).forEach(item => {
@@ -759,6 +806,26 @@ function buildQs() {
     wrapper.appendChild(preview);
     list.appendChild(wrapper);
   });
+}
+
+function chkLeadP() {
+  S.firstName = document.getElementById('fname-p').value.trim();
+  S.email = document.getElementById('email-p').value.trim();
+  document.getElementById('btn-leadp').disabled = !(S.firstName && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email));
+}
+
+function submitP() {
+  S.firstName = document.getElementById('fname-p').value.trim();
+  S.email = document.getElementById('email-p').value.trim();
+  document.getElementById('cp-name').textContent = S.firstName;
+  document.getElementById('cp-q').textContent = S.question;
+  document.getElementById('cp-email').textContent = S.email;
+  const payload = { timestamp: new Date().toISOString(), role: 'parent', firstName: S.firstName, email: S.email, childYear: S.childYear, topics: S.topics.join(', '), question: S.question };
+  console.log('Submit (parent):', payload);
+  // TODO: POST to ActiveCampaign
+  goTo('s7p', 6, 6);
+  document.getElementById('pbar').style.width = '100%';
+  document.getElementById('step-ind').textContent = '';
 }
 
 function toggleFsm() {
