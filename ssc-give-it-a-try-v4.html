@@ -512,11 +512,26 @@ select.field-input {
 <!-- ═══ S2P: PARENT HOOK ═══ -->
 <div class="screen" id="s2p">
   <div class="card">
-    <div class="eyebrow">For families</div>
+    <div class="eyebrow">At home</div>
     <h1 class="title">Your child has more to say than you think.</h1>
     <p class="subtitle">Big Debate Club sends a short debate video to watch and discuss at home. 10 minutes. No pressure. Just a child getting used to the sound of their own voice.</p>
-    <button class="btn btn-green" onclick="goTo('s3p',3,6)">That sounds good →</button>
-    <button class="btn btn-ghost" onclick="goTo('s1',1,6)">← Back</button>
+    <button class="btn btn-green" onclick="goTo('s2p2',2,4)">Try a free debate →</button>
+    <button class="btn btn-ghost" onclick="goTo('s1',1,4)">← Back</button>
+  </div>
+</div>
+
+<!-- ═══ S2P2: WHO IS THIS FOR ═══ -->
+<div class="screen" id="s2p2">
+  <div class="card">
+    <div class="eyebrow">Quick question</div>
+    <h1 class="title">Who's this for?</h1>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+      <button class="q-row" id="ptype-parent"   onclick="pickPtype('parent')"   style="text-align:left;padding:14px 16px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:1rem;font-family:inherit;">👨‍👩‍👧 I'm a parent</button>
+      <button class="q-row" id="ptype-home_ed"  onclick="pickPtype('home_ed')"  style="text-align:left;padding:14px 16px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:1rem;font-family:inherit;">🏠 I home educate</button>
+      <button class="q-row" id="ptype-tutor"    onclick="pickPtype('tutor')"    style="text-align:left;padding:14px 16px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:1rem;font-family:inherit;">📚 I'm a tutor</button>
+    </div>
+    <button class="btn btn-green" id="btn-ptype" disabled onclick="goTo('sprevp',3,4)">Next →</button>
+    <button class="btn btn-ghost" onclick="goTo('s2p',1,4)">← Back</button>
   </div>
 </div>
 
@@ -589,8 +604,8 @@ select.field-input {
       <label class="field-label" for="email-p">Email address</label>
       <input class="field-input" id="email-p" type="email" placeholder="you@email.com" oninput="chkLeadP()">
     </div>
-    <button class="btn btn-green" id="btn-leadp" disabled onclick="submitP()">Send me debates →</button>
-    <button class="btn btn-ghost" onclick="goTo('s5', 5, 6)">← Back</button>
+    <button class="btn btn-green" id="btn-leadp" disabled onclick="submitP()">Send me the free debate →</button>
+    <button class="btn btn-ghost" onclick="goTo('s2p2', 2, 4)">← Back</button>
   </div>
 </div>
 
@@ -676,7 +691,7 @@ select.field-input {
 </div>
 
 <script>
-const S = { role:'', schoolName:'', schoolType:'', childYear:'', topics:[], question:'', firstName:'', email:'', fsm:false };
+const S = { role:'', parentType:'', schoolName:'', schoolType:'', childYear:'', topics:[], question:'', firstName:'', email:'', fsm:false };
 
 const QB = {
   british_values: [
@@ -739,15 +754,10 @@ function pick(k,v) { S[k]=v; }
 
 function backS4() { goTo(S.role==='teacher' ? 's2t2' : 's3p', 3, S.role==='teacher' ? 7 : 6); }
 
-// After picking question: route by role
+// After picking question (teacher only now)
 function goToAfterQ() {
-  if (S.role === 'teacher') {
-    document.getElementById('prev-q').textContent = S.question;
-    goTo('sprev', 6, 7);
-  } else {
-    document.getElementById('prev-qp').textContent = S.question;
-    goTo('sprevp', 6, 6);
-  }
+  document.getElementById('prev-q').textContent = S.question;
+  goTo('sprev', 6, 7);
 }
 
 function chkLead() {
@@ -808,6 +818,13 @@ function buildQs() {
   });
 }
 
+function pickPtype(type) {
+  S.parentType = type;
+  document.querySelectorAll('#s2p2 .q-row').forEach(btn => btn.style.borderColor = 'var(--border)');
+  document.getElementById('ptype-' + type).style.borderColor = 'var(--green)';
+  document.getElementById('btn-ptype').disabled = false;
+}
+
 function chkLeadP() {
   S.firstName = document.getElementById('fname-p').value.trim();
   S.email = document.getElementById('email-p').value.trim();
@@ -820,10 +837,10 @@ function submitP() {
   document.getElementById('cp-name').textContent = S.firstName;
   document.getElementById('cp-q').textContent = S.question;
   document.getElementById('cp-email').textContent = S.email;
-  const payload = { timestamp: new Date().toISOString(), role: 'parent', firstName: S.firstName, email: S.email, childYear: S.childYear, topics: S.topics.join(', '), question: S.question };
+  const payload = { timestamp: new Date().toISOString(), role: 'parent', parentType: S.parentType, firstName: S.firstName, email: S.email };
   console.log('Submit (parent):', payload);
   // TODO: POST to ActiveCampaign
-  goTo('s7p', 6, 6);
+  goTo('s7p', 4, 4);
   document.getElementById('pbar').style.width = '100%';
   document.getElementById('step-ind').textContent = '';
 }
