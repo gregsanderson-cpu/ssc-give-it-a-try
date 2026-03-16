@@ -700,6 +700,9 @@ select.field-input {
 </div>
 
 <script>
+const ZAPIER_TEACHER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/2560973/upbjdxh/';
+const ZAPIER_PARENT_WEBHOOK  = 'YOUR_ZAPIER_PARENT_WEBHOOK_URL';
+
 const S = { role:'', parentType:'', schoolName:'', schoolType:'', childYear:'', topics:[], question:'', firstName:'', email:'', fsm:false };
 
 const QB = {
@@ -847,8 +850,7 @@ function submitP() {
   document.getElementById('cp-q').textContent = S.question;
   document.getElementById('cp-email').textContent = S.email;
   const payload = { timestamp: new Date().toISOString(), role: 'parent', parentType: S.parentType, firstName: S.firstName, email: S.email };
-  console.log('Submit (parent):', payload);
-  // TODO: POST to ActiveCampaign
+  fetch(ZAPIER_PARENT_WEBHOOK, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).catch(()=>{});
   goTo('s7p', 3, 3);
   document.getElementById('pbar').style.width = '100%';
   document.getElementById('step-ind').textContent = '';
@@ -865,9 +867,7 @@ function submit() {
   document.getElementById('c-q').textContent = S.question;
   document.getElementById('c-email').textContent = S.email;
   const payload = { timestamp:new Date().toISOString(), role:S.role, firstName:S.firstName, email:S.email, schoolName:S.schoolName, schoolType:S.schoolType, childYear:S.childYear, topics:S.topics.join(', '), question:S.question, fsm:S.fsm };
-  console.log('Submit:', payload);
-  // TODO: POST to Google Apps Script webhook
-  // TODO: POST to ActiveCampaign
+  fetch(ZAPIER_TEACHER_WEBHOOK, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).catch(()=>{});
   goTo('s7', S.role==='teacher' ? 7 : 6, S.role==='teacher' ? 7 : 6);
   document.getElementById('pbar').style.width = '100%';
   document.getElementById('step-ind').textContent = '';
