@@ -35,12 +35,14 @@ body {
 
 /* ── LOGO HEADER ── */
 .site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
   text-align: center;
-  padding: 18px 20px 14px;
-  flex-shrink: 0;
+  padding: 14px 20px;
+  z-index: 10;
 }
 .site-header img {
-  height: 32px;
+  height: 48px;
   width: auto;
   display: inline-block;
 }
@@ -60,7 +62,7 @@ body {
   align-items: center;
   justify-content: center;
   flex: 1;
-  padding: 24px 20px 40px;
+  padding: 90px 20px 40px;
   animation: up 0.28s ease both;
 }
 
