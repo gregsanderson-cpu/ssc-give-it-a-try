@@ -443,18 +443,15 @@ select.field-input {
 <div class="screen active" id="s1">
   <div class="card">
     <div class="eyebrow">Give it a try</div>
-    <h1 class="title">Where are you hoping to use Smart School Councils?</h1>
-    <p class="subtitle">So we can show you what it looks like for you.</p>
+    <h1 class="title">Try Smart School Councils…</h1>
     <div class="two-up">
       <button class="role-btn" onclick="pick('role','teacher'); goTo('s2t',2,7)">
         <span class="role-icon">🏫</span>
-        <span class="role-label">In a school</span>
-        <span class="role-sub">Teacher, leader or staff</span>
+        <span class="role-label">In school</span>
       </button>
-      <button class="role-btn" disabled style="opacity:0.35;cursor:not-allowed;">
+      <button class="role-btn" onclick="pick('role','parent'); goTo('s2p',2,4)">
         <span class="role-icon">🏠</span>
         <span class="role-label">At home</span>
-        <span class="role-sub">Coming soon</span>
       </button>
     </div>
   </div>
