@@ -567,8 +567,8 @@ select.field-input {
 <div class="screen" id="s5">
   <div class="card">
     <div class="eyebrow">Choose your question</div>
-    <h1 class="title">Which question would you use with your class?</h1>
-    <p class="subtitle" style="margin-bottom:16px;">These match your chosen topics. Pick the one that fits best — you'll get the full Class Meeting built around it.</p>
+    <h1 class="title">Pick a question to try</h1>
+    <p class="subtitle" style="margin-bottom:16px;">Choose your favourite to try.</p>
     <div class="q-list" id="q-list"></div>
     <button class="btn btn-green" id="btn5" disabled onclick="goToAfterQ()">I'd use this one →</button>
     <button class="btn btn-ghost" onclick="goTo('s4',4,S.role==='teacher'?7:6)">← Back</button>
@@ -797,7 +797,7 @@ function buildQs() {
   list.innerHTML = '';
   S.question = '';
   document.getElementById('btn5').disabled = true;
-  document.querySelector('#s5 h1').textContent = S.role === 'teacher' ? 'Pick a question to try with your class' : 'Pick a question to try at home';
+  document.querySelector('#s5 h1').textContent = 'Pick a question to try';
   const seen = new Set(), qs = [];
   S.topics.forEach(t => (QB[t]||[]).forEach(q => { if(!seen.has(q.q)){seen.add(q.q);qs.push(q);} }));
   qs.slice(0,5).forEach(item => {
