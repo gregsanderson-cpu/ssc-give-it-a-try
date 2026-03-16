@@ -443,18 +443,15 @@ select.field-input {
 <div class="screen active" id="s1">
   <div class="card">
     <div class="eyebrow">Give it a try</div>
-    <h1 class="title">Where are you hoping to use Smart School Councils?</h1>
-    <p class="subtitle">So we can show you what it looks like for you.</p>
+    <h1 class="title">Try Smart School Councils…</h1>
     <div class="two-up">
       <button class="role-btn" onclick="pick('role','teacher'); goTo('s2t',2,7)">
         <span class="role-icon">🏫</span>
-        <span class="role-label">In a school</span>
-        <span class="role-sub">Teacher, leader or staff</span>
+        <span class="role-label">In school</span>
       </button>
-      <button class="role-btn" disabled style="opacity:0.35;cursor:not-allowed;">
+      <button class="role-btn" onclick="pick('role','parent'); goTo('s2p',2,4)">
         <span class="role-icon">🏠</span>
         <span class="role-label">At home</span>
-        <span class="role-sub">Coming soon</span>
       </button>
     </div>
   </div>
@@ -513,27 +510,13 @@ select.field-input {
 <div class="screen" id="s2p">
   <div class="card">
     <div class="eyebrow">At home</div>
-    <h1 class="title">Your child has more to say than you think.</h1>
-    <p class="subtitle">Big Debate Club sends a short debate video to watch and discuss at home. 10 minutes. No pressure. Just a child getting used to the sound of their own voice.</p>
-    <button class="btn btn-green" onclick="goTo('s2p2',2,4)">Try a free debate →</button>
-    <button class="btn btn-ghost" onclick="goTo('s1',1,4)">← Back</button>
+    <h1 class="title">Try Big Debate Club</h1>
+    <p class="subtitle">It helps you to have short, fun debates at home.</p>
+    <button class="btn btn-green" onclick="goTo('sprevp',2,3)">Try a free debate →</button>
+    <button class="btn btn-ghost" onclick="goTo('s1',1,3)">← Back</button>
   </div>
 </div>
 
-<!-- ═══ S2P2: WHO IS THIS FOR ═══ -->
-<div class="screen" id="s2p2">
-  <div class="card">
-    <div class="eyebrow">Quick question</div>
-    <h1 class="title">Who's this for?</h1>
-    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
-      <button class="q-row" id="ptype-parent"   onclick="pickPtype('parent')"   style="text-align:left;padding:14px 16px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:1rem;font-family:inherit;">👨‍👩‍👧 I'm a parent</button>
-      <button class="q-row" id="ptype-home_ed"  onclick="pickPtype('home_ed')"  style="text-align:left;padding:14px 16px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:1rem;font-family:inherit;">🏠 I home educate</button>
-      <button class="q-row" id="ptype-tutor"    onclick="pickPtype('tutor')"    style="text-align:left;padding:14px 16px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:1rem;font-family:inherit;">📚 I'm a tutor</button>
-    </div>
-    <button class="btn btn-green" id="btn-ptype" disabled onclick="goTo('sprevp',3,4)">Next →</button>
-    <button class="btn btn-ghost" onclick="goTo('s2p',1,4)">← Back</button>
-  </div>
-</div>
 
 <!-- ═══ S4: PICK TOPICS ═══ -->
 <div class="screen" id="s4">
@@ -594,8 +577,12 @@ select.field-input {
 <div class="screen" id="sprevp">
   <div class="card">
     <div class="eyebrow">Almost there</div>
-    <h1 class="title">We'll send you a debate to try every week</h1>
-    <div class="selected-q" id="prev-qp"></div>
+    <h1 class="title">We'll send you a free debate to try</h1>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      <button class="q-row" id="ptype-parent"  onclick="pickPtype('parent')"  style="text-align:left;padding:12px 16px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:1rem;font-family:inherit;">👨‍👩‍👧 I'm a parent</button>
+      <button class="q-row" id="ptype-home_ed" onclick="pickPtype('home_ed')" style="text-align:left;padding:12px 16px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:1rem;font-family:inherit;">🏠 I home educate</button>
+      <button class="q-row" id="ptype-tutor"   onclick="pickPtype('tutor')"   style="text-align:left;padding:12px 16px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:1rem;font-family:inherit;">📚 I'm a tutor</button>
+    </div>
     <div class="field">
       <label class="field-label" for="fname-p">Your first name</label>
       <input class="field-input" id="fname-p" type="text" placeholder="e.g. Sarah" oninput="chkLeadP()">
@@ -605,7 +592,7 @@ select.field-input {
       <input class="field-input" id="email-p" type="email" placeholder="you@email.com" oninput="chkLeadP()">
     </div>
     <button class="btn btn-green" id="btn-leadp" disabled onclick="submitP()">Send me the free debate →</button>
-    <button class="btn btn-ghost" onclick="goTo('s2p2', 2, 4)">← Back</button>
+    <button class="btn btn-ghost" onclick="goTo('s2p', 1, 3)">← Back</button>
   </div>
 </div>
 
@@ -820,15 +807,15 @@ function buildQs() {
 
 function pickPtype(type) {
   S.parentType = type;
-  document.querySelectorAll('#s2p2 .q-row').forEach(btn => btn.style.borderColor = 'var(--border)');
+  document.querySelectorAll('#sprevp .q-row').forEach(btn => btn.style.borderColor = 'var(--border)');
   document.getElementById('ptype-' + type).style.borderColor = 'var(--green)';
-  document.getElementById('btn-ptype').disabled = false;
+  chkLeadP();
 }
 
 function chkLeadP() {
   S.firstName = document.getElementById('fname-p').value.trim();
   S.email = document.getElementById('email-p').value.trim();
-  document.getElementById('btn-leadp').disabled = !(S.firstName && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email));
+  document.getElementById('btn-leadp').disabled = !(S.parentType && S.firstName && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email));
 }
 
 function submitP() {
@@ -840,7 +827,7 @@ function submitP() {
   const payload = { timestamp: new Date().toISOString(), role: 'parent', parentType: S.parentType, firstName: S.firstName, email: S.email };
   console.log('Submit (parent):', payload);
   // TODO: POST to ActiveCampaign
-  goTo('s7p', 4, 4);
+  goTo('s7p', 3, 3);
   document.getElementById('pbar').style.width = '100%';
   document.getElementById('step-ind').textContent = '';
 }
