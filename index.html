@@ -963,7 +963,8 @@ function submit() {
   document.getElementById('c-name').textContent = S.firstName;
   document.getElementById('c-q').textContent = S.question;
   document.getElementById('c-email').textContent = S.email;
-  const payload = { firstName:S.firstName, email:S.email, schoolName:S.schoolName, schoolType:S.schoolType, topic:S.topics.join(', '), question:S.question, fsm:S.fsm };
+  const topicLabels = { wellbeing:'Wellbeing', british_values:'British Values', curriculum:'Curriculum', environment:'Environment', ai_technology:'AI & Technology' };
+  const payload = { firstName:S.firstName, email:S.email, schoolName:S.schoolName, schoolType:S.schoolType, topic:S.topics.map(t=>topicLabels[t]||t).join(', '), question:S.question, fsm:S.fsm };
   fetch(TRY_PROXY_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).catch(()=>{});
   goTo('s7', S.role==='teacher' ? 7 : 6, S.role==='teacher' ? 7 : 6);
   document.getElementById('pbar').style.width = '100%';
