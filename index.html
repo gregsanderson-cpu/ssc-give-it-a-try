@@ -256,11 +256,11 @@ select.field-input {
 /* ── FIELD REVEAL (unroll) ── */
 .field-reveal {
   max-height: 0; opacity: 0; overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, margin-top 0.4s ease;
-  margin-top: 0 !important;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, margin-top 0.4s ease, margin-bottom 0.4s ease;
+  margin-top: 0 !important; margin-bottom: 0 !important;
 }
-.field-reveal.shown { max-height: 160px; opacity: 1; margin-top: 16px !important; }
-.fsm-wrap.field-reveal.shown { max-height: 80px; margin-top: 8px !important; }
+.field-reveal.shown { max-height: 160px; opacity: 1; margin-top: 16px !important; margin-bottom: 16px !important; }
+.fsm-wrap.field-reveal.shown { max-height: 80px; margin-top: 8px !important; margin-bottom: 8px !important; }
 
 /* ── NOT LISTED LINK ── */
 .not-listed-link {
@@ -784,7 +784,6 @@ select.field-input {
       </div>
     </div>
 
-    <div style="height:20px"></div>
     <button class="btn btn-green" id="btn-lead" disabled onclick="submit()">Send me the Class Meeting →</button>
     <button class="btn btn-ghost" onclick="goTo('s5', 5, S.role==='teacher' ? 7 : 6)">← Back</button>
   </div>
