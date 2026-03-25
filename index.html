@@ -726,7 +726,7 @@ const S = { role:'', parentType:'', schoolName:'', schoolType:'', childYear:'', 
 
 const QB = {
   wellbeing: [
-    {q:"Do you think banning under 16s from social media will protect their wellbeing — or limit their freedom to connect and express themselves?", tag:"Wellbeing", rec:true,
+    {q:"Do you think banning under 16s from social media will protect their wellbeing, or limit their freedom to connect and express themselves?", tag:"Wellbeing", rec:true,
       options:[{text:"Protect their wellbeing",emoji:"🛡️"},{text:"Limit their freedom",emoji:"🔓"}]},
     {q:"Do girls receive more peer pressure than boys?", tag:"Wellbeing",
       options:[{text:"Yes they do",emoji:"👍"},{text:"No they don't",emoji:"👎"}]},
@@ -746,7 +746,7 @@ const QB = {
       options:[{text:"A right to choose",emoji:"✅"},{text:"A responsibility to take part",emoji:"🗳️"}]},
   ],
   curriculum: [
-    {q:"Schools in England have been told they should ban mobile phones in school — but what do you think?", tag:"Curriculum", rec:true,
+    {q:"Schools in England have been told they should ban mobile phones in school. But what do you think?", tag:"Curriculum", rec:true,
       options:[{text:"Ban in lessons, keep for breaktimes",emoji:"📵"},{text:"Ban them all day",emoji:"🚫"},{text:"Don't ban them at all",emoji:"📱"}]},
     {q:"In what way would you like more music in schools?", tag:"Curriculum",
       options:[{text:"More chances to sing",emoji:"🎤"},{text:"Learn to play instruments",emoji:"🎸"},{text:"Create and produce music",emoji:"🎛️"},{text:"Something else",emoji:"💡"}]},
@@ -790,10 +790,49 @@ function pick(k,v) { S[k]=v; }
 
 function backS4() { goTo(S.role==='teacher' ? 's2t2' : 's3p', 3, S.role==='teacher' ? 7 : 6); }
 
+function launchConfetti(callback) {
+  const overlay = document.getElementById('confettiOverlay');
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  overlay.style.display = 'block';
+  const colours = ['#4a7c59','#68a57a','#f6c90e','#ff6b6b','#74c0fc','#a78bfa','#fff'];
+  const pieces = Array.from({length: 90}, () => ({
+    x: Math.random() * canvas.width,
+    y: canvas.height + 20 + Math.random() * 60,
+    r: 5 + Math.random() * 7,
+    speedY: -(6 + Math.random() * 8),
+    speedX: (Math.random() - 0.5) * 4,
+    gravity: 0.15,
+    color: colours[Math.floor(Math.random() * colours.length)],
+    angle: 0,
+    tiltSpeed: 0.08 + Math.random() * 0.12,
+    tilt: Math.random() * 10 - 5
+  }));
+  let done = false;
+  function finish() { if (done) return; done = true; overlay.style.display = 'none'; if (callback) callback(); }
+  setTimeout(finish, 1400);
+  function draw() {
+    if (done) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.angle += p.tiltSpeed; p.tilt = Math.sin(p.angle) * 13;
+      p.speedY += p.gravity; p.y += p.speedY;
+      p.x += p.speedX + Math.sin(p.angle) * 1.2;
+      ctx.beginPath(); ctx.lineWidth = p.r / 2; ctx.strokeStyle = p.color;
+      ctx.moveTo(p.x + p.tilt + p.r / 4, p.y);
+      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 4); ctx.stroke();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
 // After picking question (teacher only now)
 function goToAfterQ() {
   document.getElementById('prev-q').textContent = S.question;
-  goTo('sprev', 6, 7);
+  launchConfetti(() => goTo('sprev', 6, 7));
 }
 
 function chkLead() {
@@ -898,5 +937,10 @@ function submit() {
   document.getElementById('step-ind').textContent = '';
 }
 </script>
+
+<!-- Confetti overlay -->
+<div id="confettiOverlay" style="display:none;position:fixed;inset:0;z-index:9999;pointer-events:none;">
+  <canvas id="confettiCanvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+</div>
 </body>
 </html>
