@@ -1023,6 +1023,14 @@ function acSelect(s) {
   S.schoolName = s.name;
   S.urn = s.urn;
   S.schoolType = guessSchoolType(s.phase, s.type);
+  S.schoolLat = null; S.schoolLng = null;
+  // Geocode postcode silently for map zoom
+  if (s.postcode) {
+    fetch('https://api.postcodes.io/postcodes/' + encodeURIComponent(s.postcode))
+      .then(r => r.json())
+      .then(d => { if (d.status === 200 && d.result) { S.schoolLat = d.result.latitude; S.schoolLng = d.result.longitude; } })
+      .catch(() => {});
+  }
   // Hide FSM checkbox — will show after email only for non-England schools
   document.getElementById('f-fsm').classList.remove('shown');
   // Trigger unroll
@@ -1200,8 +1208,10 @@ function renderMemberMap() {
   if (!mapEl || memberMapInstance) return;
   mapEl.style.display = 'block';
   if (loadEl) loadEl.style.display = 'none';
+  const mapCenter = (S.schoolLat && S.schoolLng) ? [S.schoolLat, S.schoolLng] : [54.5, -3.0];
+  const mapZoom   = (S.schoolLat && S.schoolLng) ? 8 : 5;
   memberMapInstance = L.map('memberMap', { zoomControl: true, attributionControl: false })
-    .setView([54.5, -3.0], 5);
+    .setView(mapCenter, mapZoom);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 })
     .addTo(memberMapInstance);
   fetch(MAP_CSV_URL)
