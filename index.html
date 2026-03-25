@@ -507,47 +507,36 @@ select.field-input {
 <!-- ═══ S2T: TEACHER HOOK ═══ -->
 <div class="screen" id="s2t">
   <div class="card">
-    <div class="eyebrow">For schools</div>
-    <h1 class="title">Every voice in your school matters.</h1>
-    <p class="subtitle">Let's give your school council a simple and structured way to hear them.</p>
-    <button class="btn btn-green" onclick="goTo('s2t_bridge',3,7)">Show me how →</button>
-    <button class="btn btn-ghost" onclick="goTo('s1',1,7)">← Back</button>
+    <div class="eyebrow">For school councils</div>
+    <h1 class="title">Give your school council a way to hear more pupils.</h1>
+    <p class="subtitle">Each class has a quick structured discussion, so the whole school has a say, not just the ten on the council.</p>
+    <button class="btn btn-green" onclick="goTo('s2t_bridge',3,6)">Show me how →</button>
+    <button class="btn btn-ghost" onclick="goTo('s1',1,6)">← Back</button>
   </div>
 </div>
 
-<!-- ═══ S2T_BRIDGE: WHAT IS A CLASS MEETING ═══ -->
+<!-- ═══ S2T_BRIDGE: HOW IT WORKS ═══ -->
 <div class="screen" id="s2t_bridge">
   <div class="card">
     <div class="eyebrow">How it works</div>
-    <h1 class="title">Short, structured class meetings bring more pupil voices in.</h1>
+    <h1 class="title">Quick, structured, and ready to go.</h1>
     <div style="margin-bottom:20px;">
       <img src="roby-park-tweet.jpg" alt="Tweet from Year 6 @ Roby Park Primary about their Smart School Council meeting" style="width:100%;border-radius:12px 12px 0 0;display:block;">
       <div style="background:#f7f7f7;border-radius:0 0 12px 12px;padding:8px 12px;font-size:13px;color:#666;font-style:italic;">Year 6, Roby Park Primary School</div>
     </div>
-    <button class="btn btn-green" onclick="goTo('s2t2',4,7)">Tell me more →</button>
-    <button class="btn btn-ghost" onclick="goTo('s2t',2,7)">← Back</button>
-  </div>
-</div>
-
-<!-- ═══ S2T2: WHAT YOU'LL GET ═══ -->
-<div class="screen" id="s2t2">
-  <div class="card">
-    <div class="eyebrow">How it works</div>
-    <h1 class="title">Each class meeting is quick, simple, and ready to go.</h1>
-<ul style="list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:10px;">
+    <ul style="list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:10px;">
       <li class="s2t2-bullet" style="display:flex;align-items:flex-start;gap:10px;font-size:15px;font-weight:700;color:#555;">
-        <span style="color:#3ca246;font-size:18px;line-height:1.2;">✓</span>Led by pupils, not the teacher.
+        <span style="color:#3ca246;font-size:18px;line-height:1.2;">✓</span>5-10 minutes per class
       </li>
       <li class="s2t2-bullet" style="display:flex;align-items:flex-start;gap:10px;font-size:15px;font-weight:700;color:#555;">
-        <span style="color:#3ca246;font-size:18px;line-height:1.2;">✓</span>5-10 minutes long
+        <span style="color:#3ca246;font-size:18px;line-height:1.2;">✓</span>Choose from 2,000+ ready-made questions, or write your own
       </li>
       <li class="s2t2-bullet" style="display:flex;align-items:flex-start;gap:10px;font-size:15px;font-weight:700;color:#555;">
-        <span style="color:#3ca246;font-size:18px;line-height:1.2;">✓</span>Use a ready-made topic, or set your own question
+        <span style="color:#3ca246;font-size:18px;line-height:1.2;">✓</span>Every pupil gets a say, not just the ones on the council
       </li>
     </ul>
-
-    <button class="btn btn-green" onclick="goTo('s4',4,7)">Try it now →</button>
-    <button class="btn btn-ghost" onclick="goTo('s2t_bridge',3,7)">← Back</button>
+    <button class="btn btn-green" onclick="goTo('s4',4,6)">Try it now →</button>
+    <button class="btn btn-ghost" onclick="goTo('s2t',2,6)">← Back</button>
   </div>
 </div>
 
