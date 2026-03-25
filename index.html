@@ -445,11 +445,33 @@ select.field-input {
 }
 
 
+/* ── ANSWER OPTIONS ── */
+.q-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+  padding: 12px 14px 16px;
+  background: var(--green-bg);
+}
+.q-opt {
+  background: white;
+  border: 1.5px solid var(--green-border);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.q-opt-emoji { font-size: 24px; line-height: 1; }
+.q-opt-text { font-size: 11px; font-weight: 700; color: var(--mid); line-height: 1.3; }
+
 @media (max-width: 480px) {
   .card { padding: 28px 22px; }
   .two-up { grid-template-columns: 1fr; }
   .chips { grid-template-columns: 1fr 1fr; }
-.confirm-top { padding: 28px 22px; }
+  .confirm-top { padding: 28px 22px; }
   .confirm-body { padding: 20px 22px 28px; }
 }
 </style>
@@ -547,15 +569,11 @@ select.field-input {
     <h1 class="title">What topic would you like to try?</h1>
     <p class="subtitle" style="margin-bottom:16px;">We have 2,000+ questions to choose from, or you can write your own. Here's a taster.</p>
     <div class="chips">
-      <button class="chip" onclick="toggleChip(this,'british_values')"><span class="chip-emoji">🇬🇧</span><span class="chip-name">British Values</span><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'oracy')"><span class="chip-emoji">🎤</span><span class="chip-name">Oracy</span><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'smsc')"><span class="chip-emoji">🌱</span><span class="chip-name">SMSC</span><span class="chip-check"></span></button>
       <button class="chip" onclick="toggleChip(this,'wellbeing')"><span class="chip-emoji">💚</span><span class="chip-name">Wellbeing</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'british_values')"><span class="chip-emoji">🇬🇧</span><span class="chip-name">British Values</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'curriculum')"><span class="chip-emoji">📚</span><span class="chip-name">Curriculum</span><span class="chip-check"></span></button>
       <button class="chip" onclick="toggleChip(this,'environment')"><span class="chip-emoji">🌍</span><span class="chip-name">Environment</span><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'debate')"><span class="chip-emoji">💬</span><span class="chip-name">Debate</span><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'philosophy')"><span class="chip-emoji">🤔</span><span class="chip-name">Philosophy</span><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'community')"><span class="chip-emoji">🤝</span><span class="chip-name">Community</span><span class="chip-check"></span></button>
-      <button class="chip" onclick="toggleChip(this,'change')"><span class="chip-emoji">✊</span><span class="chip-name">Change</span><span class="chip-check"></span></button>
+      <button class="chip" onclick="toggleChip(this,'ai_technology')"><span class="chip-emoji">🤖</span><span class="chip-name">AI & Technology</span><span class="chip-check"></span></button>
     </div>
     <button class="btn btn-green" id="btn4" disabled onclick="buildQs(); goTo('s5',5,S.role==='teacher'?7:6)">See questions →</button>
     <button class="btn btn-ghost" id="btn4back" onclick="backS4()">← Back</button>
@@ -706,50 +724,55 @@ const ZAPIER_PARENT_WEBHOOK  = 'YOUR_ZAPIER_PARENT_WEBHOOK_URL';
 const S = { role:'', parentType:'', schoolName:'', schoolType:'', childYear:'', topics:[], question:'', firstName:'', email:'', fsm:false };
 
 const QB = {
-  british_values: [
-    {q:"Should pupils have a say in the rules that govern their school?", tag:"British Values", rec:true},
-    {q:"How can our school better celebrate the different cultures and backgrounds in our community?", tag:"British Values"},
-    {q:"Should learning about democracy be compulsory in every school?", tag:"British Values"},
-  ],
-  oracy: [
-    {q:"Should every pupil be given a speaking and listening lesson every week?", tag:"Oracy", rec:true},
-    {q:"Does it matter how you speak, or just what you say?", tag:"Oracy"},
-    {q:"Should debate and public speaking be taught in every school?", tag:"Oracy"},
-  ],
-  smsc: [
-    {q:"What does it mean to be a good person, and can school teach you that?", tag:"SMSC", rec:true},
-    {q:"Should our school do more to help pupils understand different religions and beliefs?", tag:"SMSC"},
-    {q:"How can we make our school a place where everyone feels they matter?", tag:"SMSC"},
-  ],
   wellbeing: [
-    {q:"Should our school have a wellbeing day where pupils choose what they do?", tag:"Wellbeing", rec:true},
-    {q:"How could our school better support pupils who feel anxious or stressed?", tag:"Wellbeing"},
-    {q:"Should there be more unstructured time in the school day?", tag:"Wellbeing"},
+    {q:"Do you think banning under 16s from social media will protect their wellbeing — or limit their freedom to connect and express themselves?", tag:"Wellbeing", rec:true,
+      options:[{text:"Protect their wellbeing",emoji:"🛡️"},{text:"Limit their freedom",emoji:"🔓"}]},
+    {q:"Do girls receive more peer pressure than boys?", tag:"Wellbeing",
+      options:[{text:"Yes they do",emoji:"👍"},{text:"No they don't",emoji:"👎"}]},
+    {q:"What could our school do to help everyone feel more rested in the morning?", tag:"Wellbeing",
+      options:[{text:"Start with a calm activity",emoji:"🧘"},{text:"Play relaxing music on arrival",emoji:"🎵"},{text:"Do a short stretching exercise",emoji:"🤸"},{text:"Something else",emoji:"💡"}]},
+    {q:"What helps you feel that you really belong at school?", tag:"Wellbeing",
+      options:[{text:"Being part of a team or club",emoji:"🏆"},{text:"Having friends who include me",emoji:"👫"},{text:"Seeing my ideas or work on the wall",emoji:"🖼️"}]},
+  ],
+  british_values: [
+    {q:"Is refusing to listen to certain opinions part of the problem or part of the solution when it comes to a divided society?", tag:"British Values", rec:true,
+      options:[{text:"Part of the problem",emoji:"⚠️"},{text:"Part of the solution",emoji:"💡"}]},
+    {q:"Which human right do you think is most important?", tag:"British Values",
+      options:[{text:"Equality between men and women",emoji:"⚖️"},{text:"Freedom to express your opinions",emoji:"🗣️"},{text:"Privacy and personal data",emoji:"🔒"},{text:"The right to protest",emoji:"✊"},{text:"Safety from violence",emoji:"🛡️"}]},
+    {q:"Should we lower the voting age to 16?", tag:"British Values",
+      options:[{text:"Yes, lower it to 16",emoji:"👍"},{text:"No, keep it as it is",emoji:"👎"}]},
+    {q:"Should voting be a right that people choose to use, or a responsibility that everyone has to take part in?", tag:"British Values",
+      options:[{text:"A right to choose",emoji:"✅"},{text:"A responsibility to take part",emoji:"🗳️"}]},
+  ],
+  curriculum: [
+    {q:"Schools in England have been told they should ban mobile phones in school — but what do you think?", tag:"Curriculum", rec:true,
+      options:[{text:"Ban in lessons, keep for breaktimes",emoji:"📵"},{text:"Ban them all day",emoji:"🚫"},{text:"Don't ban them at all",emoji:"📱"}]},
+    {q:"In what way would you like more music in schools?", tag:"Curriculum",
+      options:[{text:"More chances to sing",emoji:"🎤"},{text:"Learn to play instruments",emoji:"🎸"},{text:"Create and produce music",emoji:"🎛️"},{text:"Something else",emoji:"💡"}]},
+    {q:"Should schools teach basic survival skills?", tag:"Curriculum",
+      options:[{text:"Yes they should",emoji:"👍"},{text:"No they shouldn't",emoji:"👎"}]},
+    {q:"What's the funniest way a teacher could help you learn?", tag:"Curriculum",
+      options:[{text:"Speaking in silly voices",emoji:"🤪"},{text:"Pretending to forget so we correct them",emoji:"🤭"},{text:"Something else",emoji:"💡"}]},
   ],
   environment: [
-    {q:"What's the single most important thing our school could do for the environment?", tag:"Environment", rec:true},
-    {q:"Should our school go completely plastic-free?", tag:"Environment"},
-    {q:"Should pupils help look after a patch of school grounds?", tag:"Environment"},
+    {q:"Do you think it's more important for us to recycle what we use or reduce our waste?", tag:"Environment", rec:true,
+      options:[{text:"Recycle what we use",emoji:"♻️"},{text:"Reduce our waste",emoji:"📉"}]},
+    {q:"What should our school do most to save energy?", tag:"Environment",
+      options:[{text:"Turn off lights and devices",emoji:"💡"},{text:"Use natural light",emoji:"☀️"},{text:"Install energy-efficient appliances",emoji:"⚡"},{text:"Something else",emoji:"🌱"}]},
+    {q:"Which is more important: reducing carbon emissions now, or preparing for the climate impacts of the future?", tag:"Environment",
+      options:[{text:"Reduce carbon emissions now",emoji:"🌍"},{text:"Prepare for climate impacts",emoji:"🏗️"}]},
+    {q:"Which would be more exciting to see in a school garden?", tag:"Environment",
+      options:[{text:"A giant sunflower taller than the school",emoji:"🌻"},{text:"A hedge shaped like a dragon",emoji:"🐉"}]},
   ],
-  debate: [
-    {q:"Should homework be optional?", tag:"Debate", rec:true},
-    {q:"Is social media doing more harm than good for young people?", tag:"Debate"},
-    {q:"Should the voting age be lowered to 16?", tag:"Debate"},
-  ],
-  philosophy: [
-    {q:"Is it ever okay to break a rule if you think it's unfair?", tag:"Philosophy", rec:true},
-    {q:"Does it matter if something is true, as long as it makes people happy?", tag:"Philosophy"},
-    {q:"If everyone has different opinions, can anything really be right or wrong?", tag:"Philosophy"},
-  ],
-  community: [
-    {q:"How can our school make sure every pupil feels they belong?", tag:"Community", rec:true},
-    {q:"Should older pupils help teach younger ones?", tag:"Community"},
-    {q:"What could we do to make new pupils feel more welcome?", tag:"Community"},
-  ],
-  change: [
-    {q:"What one thing would you change about our school if you could?", tag:"Change", rec:true},
-    {q:"Should pupils be involved in choosing how the school budget is spent?", tag:"Change"},
-    {q:"What would make our school council more powerful?", tag:"Change"},
+  ai_technology: [
+    {q:"Prince William says social media has killed the art of debate. Do you agree?", tag:"AI & Technology", rec:true,
+      options:[{text:"Yes",emoji:"👍"},{text:"No",emoji:"👎"}]},
+    {q:"Should teachers let AI help you with your homework?", tag:"AI & Technology",
+      options:[{text:"Yes they should",emoji:"👍"},{text:"No they shouldn't",emoji:"👎"}]},
+    {q:"Does spending time on social media make us more connected to others or more focused on ourselves?", tag:"AI & Technology",
+      options:[{text:"More connected to others",emoji:"🤝"},{text:"More focused on ourselves",emoji:"🪞"}]},
+    {q:"As AI systems make more decisions for us, are we gaining more freedom or slowly giving up control?", tag:"AI & Technology",
+      options:[{text:"Gaining more freedom",emoji:"🗽"},{text:"Giving up control",emoji:"⚙️"}]},
   ],
 };
 
@@ -809,7 +832,8 @@ function buildQs() {
     btn.innerHTML = `<span class="q-tag">${item.rec ? '⭐ ' : ''}${item.tag}</span><span class="q-text">${item.q}</span>`;
     const preview = document.createElement('div');
     preview.className = 'q-preview';
-    preview.innerHTML = `<div><img src="class-meeting-preview.jpg" alt="Class meeting preview"></div>`;
+    const optHtml = (item.options||[]).map(o=>`<div class="q-opt"><span class="q-opt-emoji">${o.emoji}</span><span class="q-opt-text">${o.text}</span></div>`).join('');
+    preview.innerHTML = `<div><div class="q-options">${optHtml}</div></div>`;
     btn.onclick = () => {
       const isOpen = wrapper.classList.contains('on');
       document.querySelectorAll('.q-item').forEach(w=>w.classList.remove('on'));
