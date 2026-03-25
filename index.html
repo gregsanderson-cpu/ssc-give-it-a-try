@@ -509,7 +509,7 @@ select.field-input {
   <div class="card">
     <div class="eyebrow">For school councils</div>
     <h1 class="title">Give your school council a way to hear more pupils.</h1>
-    <p class="subtitle">Each class has a quick structured discussion, so the whole school has a say, not just the ten on the council.</p>
+    <p class="subtitle">Each class has a quick structured discussion, so the whole school has a say, not just a small group.</p>
     <button class="btn btn-green" onclick="goTo('s2t_bridge',3,6)">Show me how →</button>
     <button class="btn btn-ghost" onclick="goTo('s1',1,6)">← Back</button>
   </div>
@@ -777,7 +777,7 @@ function goTo(id, step, total) {
 
 function pick(k,v) { S[k]=v; }
 
-function backS4() { goTo(S.role==='teacher' ? 's2t2' : 's3p', 3, S.role==='teacher' ? 7 : 6); }
+function backS4() { goTo(S.role==='teacher' ? 's2t_bridge' : 's3p', 3, S.role==='teacher' ? 6 : 6); }
 
 function launchConfetti(callback) {
   const overlay = document.getElementById('confettiOverlay');
