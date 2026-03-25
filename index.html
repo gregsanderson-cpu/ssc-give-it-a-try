@@ -864,7 +864,7 @@ function buildQs() {
   document.querySelector('#s5 h1').textContent = 'Pick a question to try';
   const seen = new Set(), qs = [];
   S.topics.forEach(t => (QB[t]||[]).forEach(q => { if(!seen.has(q.q)){seen.add(q.q);qs.push(q);} }));
-  qs.slice(0,5).forEach(item => {
+  qs.forEach(item => {
     const wrapper = document.createElement('div');
     wrapper.className = 'q-item';
     const btn = document.createElement('button');
@@ -941,6 +941,10 @@ function submit() {
 <!-- Confetti overlay -->
 <div id="confettiOverlay" style="display:none;position:fixed;inset:0;z-index:9999;pointer-events:none;">
   <canvas id="confettiCanvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:20px;padding:28px 44px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.18);">
+    <div style="font-size:44px;margin-bottom:8px;">🎉</div>
+    <div style="font-size:22px;font-weight:900;color:#2d3748;font-family:Nunito,sans-serif;">Great choice!</div>
+  </div>
 </div>
 </body>
 </html>
