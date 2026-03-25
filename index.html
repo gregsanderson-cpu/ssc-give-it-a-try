@@ -234,6 +234,25 @@ select.field-input {
 .q-preview > div img { width: 100%; display: block; }
 .q-preview.open { grid-template-rows: 1fr; }
 
+/* ── SCHOOL AUTOCOMPLETE ── */
+.ac-wrap { position: relative; }
+.ac-dropdown {
+  display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 100;
+  background: white; border: 2px solid var(--green); border-top: none;
+  border-radius: 0 0 10px 10px; max-height: 260px; overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.ac-dropdown.open { display: block; }
+.ac-item {
+  padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.ac-item:last-child { border-bottom: none; }
+.ac-item:hover, .ac-item.active { background: var(--green-bg); }
+.ac-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.ac-meta { font-size: 11px; color: var(--mid); }
+.ac-spinner { padding: 12px 14px; font-size: 12px; color: var(--mid); }
+
 /* ── FSM ── */
 .fsm-wrap { margin-top: 8px; }
 .fsm-row {
@@ -694,7 +713,10 @@ select.field-input {
     </div>
     <div class="field">
       <label class="field-label" for="school-name">School name</label>
-      <input class="field-input" id="school-name" type="text" placeholder="e.g. Greenfield Primary" oninput="chkLead()">
+      <div class="ac-wrap">
+        <input class="field-input" id="school-name" type="text" placeholder="Start typing your school name…" autocomplete="off" oninput="acInput(this.value)" onkeydown="acKey(event)">
+        <div class="ac-dropdown" id="ac-dropdown"></div>
+      </div>
     </div>
     <div class="field">
       <label class="field-label" for="school-type">School type</label>
@@ -752,7 +774,7 @@ select.field-input {
 <script>
 const TRY_PROXY_URL = 'https://bigdebate.club/try-proxy.php';
 
-const S = { role:'', parentType:'', schoolName:'', schoolType:'', childYear:'', topics:[], question:'', firstName:'', email:'', fsm:false };
+const S = { role:'', parentType:'', schoolName:'', schoolType:'', urn:'', childYear:'', topics:[], question:'', firstName:'', email:'', fsm:false };
 
 const QB = {
   wellbeing: [
@@ -865,9 +887,84 @@ function goToAfterQ() {
   launchConfetti(() => goTo('sprev', 6, 7));
 }
 
+/* ── SCHOOL AUTOCOMPLETE ── */
+const SCHOOL_SEARCH_URL = 'https://bigdebate.club/school-search.php';
+let acTimer = null, acIdx = -1;
+
+function acInput(val) {
+  S.schoolName = val; S.urn = '';
+  clearTimeout(acTimer);
+  const dd = document.getElementById('ac-dropdown');
+  if (val.length < 2) { dd.innerHTML = ''; dd.classList.remove('open'); chkLead(); return; }
+  dd.innerHTML = '<div class="ac-spinner">Searching…</div>';
+  dd.classList.add('open');
+  acTimer = setTimeout(() => {
+    fetch(SCHOOL_SEARCH_URL + '?q=' + encodeURIComponent(val))
+      .then(r => r.json())
+      .then(results => {
+        acIdx = -1;
+        if (!results.length) {
+          dd.innerHTML = '<div class="ac-spinner">No schools found</div>';
+          return;
+        }
+        dd.innerHTML = results.map((s, i) =>
+          `<div class="ac-item" data-idx="${i}" onmousedown="acSelect(${JSON.stringify(s).replace(/"/g,'&quot;')})">
+            <span class="ac-name">${s.name}</span>
+            <span class="ac-meta">${s.town ? s.town + ' · ' : ''}${s.postcode}</span>
+          </div>`
+        ).join('');
+      })
+      .catch(() => { dd.innerHTML = '<div class="ac-spinner">Search unavailable</div>'; });
+  }, 300);
+  chkLead();
+}
+
+function acSelect(s) {
+  document.getElementById('school-name').value = s.name;
+  document.getElementById('ac-dropdown').classList.remove('open');
+  S.schoolName = s.name;
+  S.urn = s.urn;
+  // Auto-detect school type from GIAS phase/type
+  const type = guessSchoolType(s.phase, s.type);
+  if (type) {
+    document.getElementById('school-type').value = type;
+    S.schoolType = type;
+  }
+  chkLead();
+}
+
+function acKey(e) {
+  const dd = document.getElementById('ac-dropdown');
+  const items = dd.querySelectorAll('.ac-item');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); acIdx = Math.min(acIdx+1, items.length-1); acHighlight(items); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); acIdx = Math.max(acIdx-1, 0); acHighlight(items); }
+  else if (e.key === 'Enter' && acIdx >= 0) { e.preventDefault(); items[acIdx].dispatchEvent(new MouseEvent('mousedown')); }
+  else if (e.key === 'Escape') { dd.classList.remove('open'); }
+}
+
+function acHighlight(items) {
+  items.forEach((el, i) => el.classList.toggle('active', i === acIdx));
+  if (acIdx >= 0) items[acIdx].scrollIntoView({ block:'nearest' });
+}
+
+function guessSchoolType(phase, type) {
+  const isIndep   = /independent/i.test(type);
+  const isSpecial = /special|pupil referral/i.test(type) || /special/i.test(phase);
+  if (isSpecial) return 'SEN / PRU';
+  if (/primary|middle/i.test(phase)) return isIndep ? 'Primary (Independent)' : 'Primary';
+  if (/secondary/i.test(phase))      return isIndep ? 'Secondary (Independent)' : 'Secondary';
+  return '';
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('.ac-wrap')) document.getElementById('ac-dropdown').classList.remove('open');
+});
+
 function chkLead() {
   S.firstName = document.getElementById('fname').value.trim();
-  S.schoolName = document.getElementById('school-name').value.trim();
+  if (!S.urn) S.schoolName = document.getElementById('school-name').value.trim();
   S.schoolType = document.getElementById('school-type').value;
   S.email = document.getElementById('email').value.trim();
   document.getElementById('btn-lead').disabled = !(S.firstName && S.schoolName && S.schoolType && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email));
@@ -964,7 +1061,7 @@ function submit() {
   document.getElementById('c-q').textContent = S.question;
   document.getElementById('c-email').textContent = S.email;
   const topicLabels = { wellbeing:'Wellbeing', british_values:'British Values', curriculum:'Curriculum', environment:'Environment', ai_technology:'AI & Technology' };
-  const payload = { firstName:S.firstName, email:S.email, schoolName:S.schoolName, schoolType:S.schoolType, topic:S.topics.map(t=>topicLabels[t]||t).join(', '), question:S.question, fsm:S.fsm };
+  const payload = { firstName:S.firstName, email:S.email, schoolName:S.schoolName, schoolType:S.schoolType, urn:S.urn, topic:S.topics.map(t=>topicLabels[t]||t).join(', '), question:S.question, fsm:S.fsm };
   fetch(TRY_PROXY_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).catch(()=>{});
   goTo('s7', S.role==='teacher' ? 7 : 6, S.role==='teacher' ? 7 : 6);
   document.getElementById('pbar').style.width = '100%';
