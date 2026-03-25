@@ -750,8 +750,7 @@ select.field-input {
 </div>
 
 <script>
-const ZAPIER_TEACHER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/2560973/upbjdxh/';
-const ZAPIER_PARENT_WEBHOOK  = 'YOUR_ZAPIER_PARENT_WEBHOOK_URL';
+const TRY_PROXY_URL = 'https://bigdebate.club/try-proxy.php';
 
 const S = { role:'', parentType:'', schoolName:'', schoolType:'', childYear:'', topics:[], question:'', firstName:'', email:'', fsm:false };
 
@@ -964,8 +963,8 @@ function submit() {
   document.getElementById('c-name').textContent = S.firstName;
   document.getElementById('c-q').textContent = S.question;
   document.getElementById('c-email').textContent = S.email;
-  const payload = { timestamp:new Date().toISOString(), role:S.role, firstName:S.firstName, email:S.email, schoolName:S.schoolName, schoolType:S.schoolType, childYear:S.childYear, topics:S.topics.join(', '), question:S.question, fsm:S.fsm };
-  fetch(ZAPIER_TEACHER_WEBHOOK, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).catch(()=>{});
+  const payload = { firstName:S.firstName, email:S.email, schoolName:S.schoolName, schoolType:S.schoolType, topic:S.topics.join(', '), question:S.question, fsm:S.fsm };
+  fetch(TRY_PROXY_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).catch(()=>{});
   goTo('s7', S.role==='teacher' ? 7 : 6, S.role==='teacher' ? 7 : 6);
   document.getElementById('pbar').style.width = '100%';
   document.getElementById('step-ind').textContent = '';
