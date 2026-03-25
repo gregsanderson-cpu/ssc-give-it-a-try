@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Get Started · Smart School Councils</title>
+<link rel="icon" href="https://smartschoolcouncils.org.uk/app/uploads/2016/08/favicon192-2.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -161,33 +162,33 @@ select.field-input {
 
 /* ── TOPIC CHIPS ── */
 .chips {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   margin-bottom: 28px;
 }
 
 .chip {
   border: 2px solid var(--border);
   border-radius: var(--radius);
-  padding: 10px 8px;
+  padding: 14px 16px;
   cursor: pointer;
   background: var(--surface);
   transition: all 0.15s;
   font-family: 'Nunito', sans-serif;
-  display: flex; align-items: center; gap: 6px;
+  display: flex; align-items: center; gap: 10px;
   width: 100%;
 }
 .chip:hover { border-color: var(--green); background: var(--green-bg); }
 .chip.on { border-color: var(--green); background: var(--green-bg); }
 .chip.on .chip-check { background: var(--green); border-color: var(--green); color: white; }
-.chip-emoji { font-size: 15px; flex-shrink: 0; }
-.chip-name { font-size: 12px; font-weight: 800; color: var(--ink); flex: 1; }
+.chip-emoji { font-size: 20px; flex-shrink: 0; }
+.chip-name { font-size: 14px; font-weight: 800; color: var(--ink); flex: 1; text-align: left; }
 .chip-check {
-  width: 16px; height: 16px; border-radius: 50%;
+  width: 18px; height: 18px; border-radius: 50%;
   border: 2px solid var(--border);
   display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 900;
+  font-size: 10px; font-weight: 900;
   transition: all 0.15s; flex-shrink: 0;
 }
 
@@ -470,7 +471,7 @@ select.field-input {
 @media (max-width: 480px) {
   .card { padding: 28px 22px; }
   .two-up { grid-template-columns: 1fr; }
-  .chips { grid-template-columns: 1fr 1fr; }
+
   .confirm-top { padding: 28px 22px; }
   .confirm-body { padding: 20px 22px 28px; }
 }
