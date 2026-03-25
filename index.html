@@ -213,6 +213,7 @@ select.field-input {
   font-family: 'Nunito', sans-serif;
   display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
   width: 100%; text-align: left;
+  position: relative;
 }
 .q-item:hover .q-row { border-color: var(--green); background: var(--green-bg); }
 .q-item.on .q-row { border: none; border-bottom: 1px solid var(--green); background: var(--green-bg); border-radius: 0; }
@@ -898,12 +899,13 @@ function buildQs() {
     wrapper.className = 'q-item';
     const btn = document.createElement('button');
     btn.className = 'q-row';
-    const bdcBadge = item.bdc ? `<span style="font-size:10px;font-weight:800;background:#fff8e1;color:#92400e;border:1px solid #f6e060;border-radius:100px;padding:2px 7px;">🎬 Big Debate Club</span>` : '';
-    btn.innerHTML = `<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;"><span class="q-tag">${item.rec ? '⭐ ' : ''}${item.tag}</span>${bdcBadge}</div><span class="q-text">${item.q}</span>`;
+    const bdcBadge = item.bdc ? `<span style="position:absolute;top:14px;right:14px;font-size:10px;font-weight:800;background:#fff8e1;color:#92400e;border:1px solid #f6e060;border-radius:100px;padding:2px 8px;white-space:nowrap;">🗣️ Big Debate Club</span>` : '';
+    btn.style.position = 'relative';
+    btn.innerHTML = `<span class="q-tag">${item.rec ? '⭐ ' : ''}${item.tag}</span>${bdcBadge}<span class="q-text">${item.q}</span>`;
     const preview = document.createElement('div');
     preview.className = 'q-preview';
     const optHtml = (item.options||[]).map(o=>`<div class="q-opt"><span class="q-opt-emoji">${o.emoji}</span><span class="q-opt-text">${o.text}</span></div>`).join('');
-    const bdcHtml = item.bdc ? `<div class="bdc-note"><span>🎬</span><span>Big Debate Club question — comes with a video intro and full debate pack</span></div>` : '';
+    const bdcHtml = item.bdc ? `<div class="bdc-note"><span>🗣️</span><span>Big Debate Club question. Includes a video intro and full debate pack.</span></div>` : '';
     preview.innerHTML = `<div><div class="q-options">${optHtml}</div>${bdcHtml}</div>`;
     btn.onclick = () => {
       const isOpen = wrapper.classList.contains('on');
@@ -967,13 +969,11 @@ function submit() {
   document.getElementById('pbar').style.width = '100%';
   document.getElementById('step-ind').textContent = '';
   initMemberMap();
-  if (S.schoolName) quickGeocodeSchool(S.schoolName);
 }
 
 // ── MEMBER MAP ──
 const MAP_CSV_URL = 'https://docs.google.com/spreadsheets/d/1ENzB0tvkyO6Frl-peGykkHjptH-lGjSO_eqado81RME/export?format=csv&gid=0';
 let memberMapInstance = null;
-let pendingMapLat = null, pendingMapLng = null, pendingMapName = null;
 
 function initMemberMap() {
   if (memberMapInstance) return;
@@ -999,8 +999,8 @@ function renderMemberMap() {
   if (!mapEl || memberMapInstance) return;
   mapEl.style.display = 'block';
   if (loadEl) loadEl.style.display = 'none';
-  memberMapInstance = L.map('memberMap', { zoomControl: false, attributionControl: false })
-    .setView([53.5, -2.0], 5);
+  memberMapInstance = L.map('memberMap', { zoomControl: true, attributionControl: false })
+    .setView([54.5, -3.0], 5);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 })
     .addTo(memberMapInstance);
   fetch(MAP_CSV_URL)
@@ -1016,7 +1016,6 @@ function renderMemberMap() {
             .addTo(memberMapInstance).bindPopup('<strong>' + s.name + '</strong>');
         }
         if (idx < schools.length) setTimeout(addBatch, 30);
-        else if (pendingMapLat !== null) setTimeout(addNewSchoolPin, 400);
       }
       addBatch();
     })
@@ -1037,32 +1036,6 @@ function parseMapCSV(text) {
     rows.push({ name: cols[0]||'', lat: parseFloat(cols[3]), lng: parseFloat(cols[4]) });
   }
   return rows;
-}
-
-function addNewSchoolPin() {
-  if (!memberMapInstance || pendingMapLat === null) return;
-  memberMapInstance.setView([pendingMapLat, pendingMapLng], 10, { animate: false });
-  setTimeout(() => {
-    const icon = L.divIcon({ className:'', html:'<div class="new-pin"></div>', iconSize:[16,16], iconAnchor:[8,8] });
-    L.marker([pendingMapLat, pendingMapLng], { icon })
-      .addTo(memberMapInstance)
-      .bindPopup('<strong>' + (pendingMapName||'Your school') + '</strong><br><span style="color:#3aac5d">Just tried it! 🎉</span>')
-      .openPopup();
-  }, 600);
-}
-
-function quickGeocodeSchool(schoolName) {
-  const q = encodeURIComponent(schoolName + ', UK');
-  fetch('https://nominatim.openstreetmap.org/search?q=' + q + '&format=json&limit=1&email=info@smartschoolcouncils.org.uk')
-    .then(r => r.json())
-    .then(results => {
-      if (!results || !results.length) return;
-      const lat = parseFloat(results[0].lat), lng = parseFloat(results[0].lon);
-      if (isNaN(lat) || isNaN(lng)) return;
-      pendingMapLat = lat; pendingMapLng = lng; pendingMapName = schoolName;
-      if (memberMapInstance) addNewSchoolPin();
-    })
-    .catch(() => {});
 }
 </script>
 
