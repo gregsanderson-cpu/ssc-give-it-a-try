@@ -302,6 +302,7 @@ select.field-input {
   margin-bottom: 20px;
   line-height: 1.4;
 }
+.selected-q:empty { display: none; }
 
 /* ── BUTTONS ── */
 .btn {
@@ -763,7 +764,7 @@ select.field-input {
     <div class="fsm-wrap field-reveal" id="f-fsm">
       <div class="fsm-row" id="fsm-row" onclick="toggleFsm()">
         <div class="fsm-box" id="fsm-box"></div>
-        <div class="fsm-text">Our school has 30%+ free school meals<span class="fsm-sub"> — you may be eligible for a subsidised place</span></div>
+        <div class="fsm-text">Our school has 30%+ free school meals<span class="fsm-sub">, you may be eligible for a subsidised place</span></div>
       </div>
     </div>
 
@@ -892,7 +893,11 @@ function revealOnInput(inputId, nextFieldId) {
 }
 
 function revealOnEmail() {
-  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value)) revealField('f-fsm');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value)) return;
+  // Only show FSM checkbox for non-England schools or manual entries (England auto-looks up FSM)
+  const isEngland = S.urn && !S.urn.startsWith('SCT-') && !S.urn.startsWith('NI-') && !S.urn.startsWith('WAL-');
+  if (!isEngland) revealField('f-fsm');
+  chkLead();
 }
 
 function useManualSchool() {
@@ -978,7 +983,7 @@ function acInput(val) {
         acIdx = -1;
         nl.classList.add('visible');
         if (!results.length) {
-          dd.innerHTML = '<div class="ac-spinner">No schools found — try a different spelling</div>';
+          dd.innerHTML = '<div class="ac-spinner">No schools found. Try a different spelling</div>';
           return;
         }
         dd.innerHTML = results.map((s, i) =>
@@ -1003,6 +1008,8 @@ function acSelect(s) {
   S.schoolName = s.name;
   S.urn = s.urn;
   S.schoolType = guessSchoolType(s.phase, s.type);
+  // Hide FSM checkbox — will show after email only for non-England schools
+  document.getElementById('f-fsm').classList.remove('shown');
   // Trigger unroll
   revealField('f-fname');
   setTimeout(() => document.getElementById('fname').focus(), 50);
