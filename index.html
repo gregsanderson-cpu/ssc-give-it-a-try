@@ -538,6 +538,22 @@ select.field-input {
   font-size: 13px; color: var(--muted); font-weight: 700;
 }
 #memberMap { width: 100%; height: 100%; }
+.member-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #3aac5d;
+  border: 2px solid rgba(255,255,255,0.9);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  opacity: 0; transform: scale(0);
+  animation: dot-in 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards,
+             dot-breathe 4s ease-in-out infinite;
+}
+@keyframes dot-in {
+  to { opacity: 0.85; transform: scale(1); }
+}
+@keyframes dot-breathe {
+  0%, 100% { opacity: 0.7;  transform: scale(1);    }
+  50%       { opacity: 0.95; transform: scale(1.25); }
+}
 .new-pin {
   width: 16px; height: 16px; border-radius: 50%;
   background: var(--green); border: 3px solid white;
@@ -1195,13 +1211,20 @@ function renderMemberMap() {
       const schools = parseMapCSV(csv).filter(s => !isNaN(s.lat) && !isNaN(s.lng));
       let idx = 0;
       function addBatch() {
-        const end = Math.min(idx + 12, schools.length);
+        const end = Math.min(idx + 20, schools.length);
         for (; idx < end; idx++) {
           const s = schools[idx];
-          L.circleMarker([s.lat, s.lng], { radius:5, fillColor:'#3aac5d', color:'#fff', weight:1.5, fillOpacity:0.85 })
-            .addTo(memberMapInstance).bindPopup('<strong>' + s.name + '</strong>');
+          const delay = Math.min(idx * 8, 1800);
+          const icon = L.divIcon({
+            className: '',
+            html: `<div class="member-dot" style="animation-delay:${delay}ms,${delay + 500}ms"></div>`,
+            iconSize: [10, 10], iconAnchor: [5, 5],
+          });
+          L.marker([s.lat, s.lng], { icon })
+            .addTo(memberMapInstance)
+            .bindPopup('<strong>' + s.name + '</strong>');
         }
-        if (idx < schools.length) setTimeout(addBatch, 30);
+        if (idx < schools.length) setTimeout(addBatch, 16);
       }
       addBatch();
     })
