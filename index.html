@@ -253,6 +253,22 @@ select.field-input {
 .ac-meta { font-size: 11px; color: var(--mid); }
 .ac-spinner { padding: 12px 14px; font-size: 12px; color: var(--mid); }
 
+/* ── FIELD REVEAL (unroll) ── */
+.field-reveal {
+  max-height: 0; opacity: 0; overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, margin-top 0.4s ease;
+  margin-top: 0 !important;
+}
+.field-reveal.shown { max-height: 160px; opacity: 1; margin-top: 16px !important; }
+.fsm-wrap.field-reveal.shown { max-height: 80px; margin-top: 8px !important; }
+
+/* ── NOT LISTED LINK ── */
+.not-listed-link {
+  display: none; margin-top: 8px;
+  font-size: 12px; color: var(--mid); cursor: pointer; text-decoration: underline;
+}
+.not-listed-link.visible { display: block; }
+
 /* ── FSM ── */
 .fsm-wrap { margin-top: 8px; }
 .fsm-row {
@@ -707,38 +723,50 @@ select.field-input {
     <div class="eyebrow">One last step</div>
     <h1 class="title">We'll send your Class Meeting straight to your inbox</h1>
     <div class="selected-q" id="prev-q"></div>
-    <div class="field">
-      <label class="field-label" for="fname">Your first name</label>
-      <input class="field-input" id="fname" type="text" placeholder="e.g. Sarah" oninput="chkLead()">
-    </div>
-    <div class="field">
+
+    <!-- Field 1: School name (always visible) -->
+    <div class="field" id="f-school">
       <label class="field-label" for="school-name">School name</label>
       <div class="ac-wrap">
         <input class="field-input" id="school-name" type="text" placeholder="Start typing your school name…" autocomplete="off" oninput="acInput(this.value)" onkeydown="acKey(event)">
         <div class="ac-dropdown" id="ac-dropdown"></div>
       </div>
-    </div>
-    <div class="field">
-      <label class="field-label" for="school-type">School type</label>
-      <select class="field-input" id="school-type" onchange="chkLead()">
-        <option value="">Select…</option>
-        <option>Primary</option>
-        <option>Secondary</option>
-        <option>SEN / PRU</option>
-        <option>Primary (Independent)</option>
-        <option>Secondary (Independent)</option>
-      </select>
-    </div>
-    <div class="field">
-      <label class="field-label" for="email">Email address</label>
-      <input class="field-input" id="email" type="email" placeholder="you@school.org.uk" oninput="chkLead()">
-    </div>
-    <div class="fsm-wrap">
-      <div class="fsm-row" id="fsm-row" onclick="toggleFsm()">
-        <div class="fsm-box" id="fsm-box"></div>
-        <div class="fsm-text">Our school has 30%+ free school meals<span class="fsm-sub"> you may be eligible for a subsidised place</span></div>
+      <span class="not-listed-link" id="not-listed-link" onclick="useManualSchool()">My school isn't listed</span>
+      <!-- Manual fallback: school type shown only when not found in list -->
+      <div id="manual-type-wrap" style="display:none; margin-top:12px;">
+        <label class="field-label" for="school-type">School type</label>
+        <select class="field-input" id="school-type" onchange="chkLead()">
+          <option value="">Select…</option>
+          <option>Primary</option>
+          <option>Secondary</option>
+          <option>SEN / PRU</option>
+          <option>Primary (Independent)</option>
+          <option>Secondary (Independent)</option>
+          <option>International / Other</option>
+        </select>
       </div>
     </div>
+
+    <!-- Field 2: First name (reveals after school confirmed) -->
+    <div class="field field-reveal" id="f-fname">
+      <label class="field-label" for="fname">Your first name</label>
+      <input class="field-input" id="fname" type="text" placeholder="e.g. Sarah" oninput="chkLead(); revealOnInput('fname','f-email')">
+    </div>
+
+    <!-- Field 3: Email (reveals after first name) -->
+    <div class="field field-reveal" id="f-email">
+      <label class="field-label" for="email">Email address</label>
+      <input class="field-input" id="email" type="email" placeholder="you@school.org.uk" oninput="chkLead(); revealOnEmail()">
+    </div>
+
+    <!-- Field 4: FSM toggle (reveals after valid email) -->
+    <div class="fsm-wrap field-reveal" id="f-fsm">
+      <div class="fsm-row" id="fsm-row" onclick="toggleFsm()">
+        <div class="fsm-box" id="fsm-box"></div>
+        <div class="fsm-text">Our school has 30%+ free school meals<span class="fsm-sub"> — you may be eligible for a subsidised place</span></div>
+      </div>
+    </div>
+
     <div style="height:20px"></div>
     <button class="btn btn-green" id="btn-lead" disabled onclick="submit()">Send me the Class Meeting →</button>
     <button class="btn btn-ghost" onclick="goTo('s5', 5, S.role==='teacher' ? 7 : 6)">← Back</button>
@@ -836,6 +864,46 @@ function goTo(id, step, total) {
   const pct = total ? ((step-1)/total)*100 : 0;
   document.getElementById('pbar').style.width = pct + '%';
   document.getElementById('step-ind').textContent = (id === 's7' || !step) ? '' : `${step} / ${total}`;
+  if (id === 'sprev') resetLeadForm();
+}
+
+function resetLeadForm() {
+  ['f-fname','f-email','f-fsm'].forEach(id => document.getElementById(id)?.classList.remove('shown'));
+  document.getElementById('school-name').value = '';
+  document.getElementById('fname').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('ac-dropdown').classList.remove('open');
+  document.getElementById('ac-dropdown').innerHTML = '';
+  document.getElementById('not-listed-link').classList.remove('visible');
+  document.getElementById('manual-type-wrap').style.display = 'none';
+  document.getElementById('fsm-row').classList.remove('on');
+  document.getElementById('fsm-box').textContent = '';
+  document.getElementById('btn-lead').disabled = true;
+  S.schoolName = ''; S.urn = ''; S.schoolType = ''; S.firstName = ''; S.email = ''; S.fsm = false;
+}
+
+function revealField(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('shown');
+}
+
+function revealOnInput(inputId, nextFieldId) {
+  if (document.getElementById(inputId).value.trim().length >= 1) revealField(nextFieldId);
+}
+
+function revealOnEmail() {
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value)) revealField('f-fsm');
+}
+
+function useManualSchool() {
+  const name = document.getElementById('school-name').value.trim();
+  if (name) { S.schoolName = name; S.urn = ''; }
+  document.getElementById('manual-type-wrap').style.display = 'block';
+  document.getElementById('not-listed-link').classList.remove('visible');
+  document.getElementById('ac-dropdown').classList.remove('open');
+  revealField('f-fname');
+  setTimeout(() => document.getElementById('fname').focus(), 50);
+  chkLead();
 }
 
 function pick(k,v) { S[k]=v; }
@@ -895,7 +963,12 @@ function acInput(val) {
   S.schoolName = val; S.urn = '';
   clearTimeout(acTimer);
   const dd = document.getElementById('ac-dropdown');
-  if (val.length < 2) { dd.innerHTML = ''; dd.classList.remove('open'); chkLead(); return; }
+  const nl = document.getElementById('not-listed-link');
+  if (val.length < 2) {
+    dd.innerHTML = ''; dd.classList.remove('open');
+    nl.classList.remove('visible');
+    chkLead(); return;
+  }
   dd.innerHTML = '<div class="ac-spinner">Searching…</div>';
   dd.classList.add('open');
   acTimer = setTimeout(() => {
@@ -903,8 +976,9 @@ function acInput(val) {
       .then(r => r.json())
       .then(results => {
         acIdx = -1;
+        nl.classList.add('visible');
         if (!results.length) {
-          dd.innerHTML = '<div class="ac-spinner">No schools found</div>';
+          dd.innerHTML = '<div class="ac-spinner">No schools found — try a different spelling</div>';
           return;
         }
         dd.innerHTML = results.map((s, i) =>
@@ -914,7 +988,10 @@ function acInput(val) {
           </div>`
         ).join('');
       })
-      .catch(() => { dd.innerHTML = '<div class="ac-spinner">Search unavailable</div>'; });
+      .catch(() => {
+        nl.classList.add('visible');
+        dd.innerHTML = '<div class="ac-spinner">Search unavailable</div>';
+      });
   }, 300);
   chkLead();
 }
@@ -922,14 +999,13 @@ function acInput(val) {
 function acSelect(s) {
   document.getElementById('school-name').value = s.name;
   document.getElementById('ac-dropdown').classList.remove('open');
+  document.getElementById('not-listed-link').classList.remove('visible');
   S.schoolName = s.name;
   S.urn = s.urn;
-  // Auto-detect school type from GIAS phase/type
-  const type = guessSchoolType(s.phase, s.type);
-  if (type) {
-    document.getElementById('school-type').value = type;
-    S.schoolType = type;
-  }
+  S.schoolType = guessSchoolType(s.phase, s.type);
+  // Trigger unroll
+  revealField('f-fname');
+  setTimeout(() => document.getElementById('fname').focus(), 50);
   chkLead();
 }
 
@@ -965,9 +1041,14 @@ document.addEventListener('click', e => {
 function chkLead() {
   S.firstName = document.getElementById('fname').value.trim();
   if (!S.urn) S.schoolName = document.getElementById('school-name').value.trim();
-  S.schoolType = document.getElementById('school-type').value;
   S.email = document.getElementById('email').value.trim();
-  document.getElementById('btn-lead').disabled = !(S.firstName && S.schoolName && S.schoolType && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email));
+  // School type: auto from GIAS, or manual if not-listed mode
+  if (!S.schoolType) S.schoolType = document.getElementById('school-type')?.value || '';
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email);
+  const validSchool = S.schoolName.length > 1;
+  const manualMode = document.getElementById('manual-type-wrap').style.display !== 'none';
+  const validType = !manualMode || S.schoolType;
+  document.getElementById('btn-lead').disabled = !(S.firstName && validSchool && validType && validEmail);
 }
 
 function chk3p() {
