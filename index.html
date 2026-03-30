@@ -820,55 +820,56 @@ const TRY_PROXY_URL = 'https://bigdebate.club/try-proxy.php';
 
 const S = { role:'', parentType:'', schoolName:'', schoolType:'', urn:'', childYear:'', topics:[], question:'', firstName:'', email:'', fsm:false };
 
+const CMT = 'https://smartschoolcouncils.org.uk/class-meeting-tool/';
 const QB = {
   wellbeing: [
-    {q:"Do you think banning under 16s from social media will protect their wellbeing, or limit their freedom to connect and express themselves?", tag:"Wellbeing", rec:true,
+    {q:"Do you think banning under 16s from social media will protect their wellbeing, or limit their freedom to connect and express themselves?", tag:"Wellbeing", rec:true, link:CMT+"MTg3MjBfMjI0NzlfMTc3NDUwOTAyOQ==/",
       options:[{text:"Protect their wellbeing",emoji:"🛡️"},{text:"Limit their freedom",emoji:"🔓"}]},
-    {q:"Do girls receive more peer pressure than boys?", tag:"Wellbeing", bdc:true,
+    {q:"Do girls receive more peer pressure than boys?", tag:"Wellbeing", bdc:true, link:CMT+"MTg3MjJfMjI0ODRfMTc3NDUwOTYzMw==/",
       options:[{text:"Yes they do",emoji:"👍"},{text:"No they don't",emoji:"👎"}]},
-    {q:"What could our school do to help everyone feel more rested in the morning?", tag:"Wellbeing",
+    {q:"What could our school do to help everyone feel more rested in the morning?", tag:"Wellbeing", link:CMT+"MTg3MjRfMjI0ODVfMTc3NDUwOTc2OA==/",
       options:[{text:"Start with a calm activity",emoji:"🧘"},{text:"Play relaxing music on arrival",emoji:"🎵"},{text:"Do a short stretching exercise",emoji:"🤸"},{text:"Something else",emoji:"💡"}]},
-    {q:"What helps you feel that you really belong at school?", tag:"Wellbeing",
+    {q:"What helps you feel that you really belong at school?", tag:"Wellbeing", link:CMT+"MTg3MjZfMjI0ODZfMTc3NDUxMDE4NA==/",
       options:[{text:"Being part of a team or club",emoji:"🏆"},{text:"Having friends who include me",emoji:"👫"},{text:"Seeing my ideas or work on the wall",emoji:"🖼️"}]},
   ],
   british_values: [
-    {q:"Is refusing to listen to certain opinions part of the problem or part of the solution when it comes to a divided society?", tag:"British Values", rec:true, bdc:true,
+    {q:"Is refusing to listen to certain opinions part of the problem or part of the solution when it comes to a divided society?", tag:"British Values", rec:true, bdc:true, link:CMT+"MTg3MjhfMjI1MDBfMTc3NDU5NzQwMA==/",
       options:[{text:"Part of the problem",emoji:"⚠️"},{text:"Part of the solution",emoji:"💡"}]},
-    {q:"Which human right do you think is most important?", tag:"British Values",
+    {q:"Which human right do you think is most important?", tag:"British Values", link:CMT+"MTg3MzBfMjI1MDFfMTc3NDU5NzUwMg==/",
       options:[{text:"Equality between men and women",emoji:"⚖️"},{text:"Freedom to express your opinions",emoji:"🗣️"},{text:"Privacy and personal data",emoji:"🔒"},{text:"The right to protest",emoji:"✊"},{text:"Safety from violence",emoji:"🛡️"}]},
-    {q:"Should we lower the voting age to 16?", tag:"British Values", bdc:true,
+    {q:"Should we lower the voting age to 16?", tag:"British Values", bdc:true, link:CMT+"MTg3MzVfMjI1MDNfMTc3NDU5NzY3Mw==/",
       options:[{text:"Yes, lower it to 16",emoji:"👍"},{text:"No, keep it as it is",emoji:"👎"}]},
-    {q:"Should voting be a right that people choose to use, or a responsibility that everyone has to take part in?", tag:"British Values",
+    {q:"Should voting be a right that people choose to use, or a responsibility that everyone has to take part in?", tag:"British Values", link:CMT+"MTg3MzJfMjI1MDJfMTc3NDU5NzU4Ng==/",
       options:[{text:"A right to choose",emoji:"✅"},{text:"A responsibility to take part",emoji:"🗳️"}]},
   ],
   curriculum: [
-    {q:"Schools in England have been told they should ban mobile phones in school. But what do you think?", tag:"Curriculum", rec:true,
+    {q:"Schools in England have been told they should ban mobile phones in school. But what do you think?", tag:"Curriculum", rec:true, link:CMT+"MTg3NDFfMjI1MDZfMTc3NDU5ODAwOA==/",
       options:[{text:"Ban in lessons, keep for breaktimes",emoji:"📵"},{text:"Ban them all day",emoji:"🚫"},{text:"Don't ban them at all",emoji:"📱"}]},
-    {q:"In what way would you like more music in schools?", tag:"Curriculum",
+    {q:"In what way would you like more music in schools?", tag:"Curriculum", link:CMT+"MTg3MzdfMjI1MDRfMTc3NDU5Nzc4MQ==/",
       options:[{text:"More chances to sing",emoji:"🎤"},{text:"Learn to play instruments",emoji:"🎸"},{text:"Create and produce music",emoji:"🎛️"},{text:"Something else",emoji:"💡"}]},
-    {q:"Should schools teach basic survival skills?", tag:"Curriculum", bdc:true,
+    {q:"Should schools teach basic survival skills?", tag:"Curriculum", bdc:true, link:CMT+"MTg3MzlfMjI1MDVfMTc3NDU5NzkwOQ==/",
       options:[{text:"Yes they should",emoji:"👍"},{text:"No they shouldn't",emoji:"👎"}]},
-    {q:"What's the funniest way a teacher could help you learn?", tag:"Curriculum",
+    {q:"What's the funniest way a teacher could help you learn?", tag:"Curriculum", link:CMT+"MTg3NDNfMjI1MDdfMTc3NDU5ODE1NA==/",
       options:[{text:"Speaking in silly voices",emoji:"🤪"},{text:"Pretending to forget so we correct them",emoji:"🤭"},{text:"Something else",emoji:"💡"}]},
   ],
   environment: [
-    {q:"Do you think it's more important for us to recycle what we use or reduce our waste?", tag:"Environment", rec:true,
+    {q:"Do you think it's more important for us to recycle what we use or reduce our waste?", tag:"Environment", rec:true, link:CMT+"MTg3NDVfMjI1MDhfMTc3NDU5ODI5Ng==/",
       options:[{text:"Recycle what we use",emoji:"♻️"},{text:"Reduce our waste",emoji:"📉"}]},
-    {q:"What should our school do most to save energy?", tag:"Environment",
+    {q:"What should our school do most to save energy?", tag:"Environment", link:CMT+"MTg3NDdfMjI1MDlfMTc3NDU5ODM4MQ==/",
       options:[{text:"Turn off lights and devices",emoji:"💡"},{text:"Use natural light",emoji:"☀️"},{text:"Install energy-efficient appliances",emoji:"⚡"},{text:"Something else",emoji:"🌱"}]},
-    {q:"Which is more important: reducing carbon emissions now, or preparing for the climate impacts of the future?", tag:"Environment", bdc:true,
+    {q:"Which is more important: reducing carbon emissions now, or preparing for the climate impacts of the future?", tag:"Environment", bdc:true, link:CMT+"MTg3NzRfMjI1MTBfMTc3NDU5ODQ3Nw==/",
       options:[{text:"Reduce carbon emissions now",emoji:"🌍"},{text:"Prepare for climate impacts",emoji:"🏗️"}]},
-    {q:"Which would be more exciting to see in a school garden?", tag:"Environment",
+    {q:"Which would be more exciting to see in a school garden?", tag:"Environment", link:CMT+"MTg3NzVfMjI1MTFfMTc3NDU5ODYzMQ==/",
       options:[{text:"A giant sunflower taller than the school",emoji:"🌻"},{text:"A hedge shaped like a dragon",emoji:"🐉"}]},
   ],
   ai_technology: [
-    {q:"Prince William says social media has killed the art of debate. Do you agree?", tag:"AI & Technology", rec:true, bdc:true,
+    {q:"Prince William says social media has killed the art of debate. Do you agree?", tag:"AI & Technology", rec:true, bdc:true, link:CMT+"MTg3NzZfMjI1MTJfMTc3NDU5ODcyMA==/",
       options:[{text:"Yes",emoji:"👍"},{text:"No",emoji:"👎"}]},
-    {q:"Should teachers let AI help you with your homework?", tag:"AI & Technology", bdc:true,
+    {q:"Should teachers let AI help you with your homework?", tag:"AI & Technology", bdc:true, link:CMT+"MTg3NzdfMjI1MTNfMTc3NDU5ODc4Mw==/",
       options:[{text:"Yes they should",emoji:"👍"},{text:"No they shouldn't",emoji:"👎"}]},
-    {q:"Does spending time on social media make us more connected to others or more focused on ourselves?", tag:"AI & Technology",
+    {q:"Does spending time on social media make us more connected to others or more focused on ourselves?", tag:"AI & Technology", link:CMT+"MTg3NzhfMjI1MTRfMTc3NDU5ODg5MQ==/",
       options:[{text:"More connected to others",emoji:"🤝"},{text:"More focused on ourselves",emoji:"🪞"}]},
-    {q:"As AI systems make more decisions for us, are we gaining more freedom or slowly giving up control?", tag:"AI & Technology",
+    {q:"As AI systems make more decisions for us, are we gaining more freedom or slowly giving up control?", tag:"AI & Technology", link:CMT+"MTg3NzlfMjI1MTVfMTc3NDU5ODk3Mw==/",
       options:[{text:"Gaining more freedom",emoji:"🗽"},{text:"Giving up control",emoji:"⚙️"}]},
   ],
 };
@@ -1123,9 +1124,11 @@ function buildQs() {
         wrapper.classList.add('on');
         preview.classList.add('open');
         S.question = item.q;
+        S.meetingLink = item.link || '';
         document.getElementById('btn5').disabled = false;
       } else {
         S.question = '';
+        S.meetingLink = '';
         document.getElementById('btn5').disabled = true;
       }
     };
@@ -1172,7 +1175,7 @@ function submit() {
   document.getElementById('c-q').textContent = S.question;
   document.getElementById('c-email').textContent = S.email;
   const topicLabels = { wellbeing:'Wellbeing', british_values:'British Values', curriculum:'Curriculum', environment:'Environment', ai_technology:'AI & Technology' };
-  const payload = { firstName:S.firstName, email:S.email, schoolName:S.schoolName, schoolType:S.schoolType, urn:S.urn, topic:S.topics.map(t=>topicLabels[t]||t).join(', '), question:S.question, fsm:S.fsm };
+  const payload = { firstName:S.firstName, email:S.email, schoolName:S.schoolName, schoolType:S.schoolType, urn:S.urn, topic:S.topics.map(t=>topicLabels[t]||t).join(', '), question:S.question, fsm:S.fsm, meetingLink:S.meetingLink||'' };
   fetch(TRY_PROXY_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).catch(()=>{});
   goTo('s7', S.role==='teacher' ? 7 : 6, S.role==='teacher' ? 7 : 6);
   document.getElementById('pbar').style.width = '100%';
