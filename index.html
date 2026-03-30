@@ -579,7 +579,10 @@ select.field-input {
 <div class="screen active" id="s2t">
   <div class="card">
     <h1 class="title">Welcome!</h1>
-    <p class="subtitle">Let's give you and your school council an easy way to hear more pupils.</p>
+    <p class="subtitle">Let's see how hundreds of schools get more pupils speaking up.</p>
+    <div id="previewMapWrap" style="border-radius:12px;overflow:hidden;margin-bottom:20px;height:180px;background:#f0f4f0;">
+      <div id="previewMap" style="width:100%;height:100%;"></div>
+    </div>
     <button class="btn btn-green" onclick="goTo('s2t_bridge',3,6)">Show me how →</button>
   </div>
 </div>
@@ -1067,9 +1070,10 @@ function submit() {
 // ── MEMBER MAP ──
 const MAP_CSV_URL = 'https://docs.google.com/spreadsheets/d/1ENzB0tvkyO6Frl-peGykkHjptH-lGjSO_eqado81RME/export?format=csv&gid=0';
 let memberMapInstance = null;
+let previewMapInstance = null;
+let mapCSVCache = null;
 
-function initMemberMap() {
-  if (memberMapInstance) return;
+function loadLeaflet(cb) {
   if (!document.getElementById('leaflet-css')) {
     const link = document.createElement('link');
     link.id = 'leaflet-css'; link.rel = 'stylesheet';
@@ -1079,11 +1083,36 @@ function initMemberMap() {
   if (!window.L) {
     const s = document.createElement('script');
     s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-    s.onload = renderMemberMap;
+    s.onload = cb;
     document.head.appendChild(s);
   } else {
-    renderMemberMap();
+    cb();
   }
+}
+
+function initPreviewMap() {
+  if (previewMapInstance) return;
+  loadLeaflet(() => {
+    const el = document.getElementById('previewMap');
+    if (!el) return;
+    previewMapInstance = L.map('previewMap', { zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, touchZoom: false })
+      .setView([54.5, -3.0], 5);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 }).addTo(previewMapInstance);
+    const src = mapCSVCache ? Promise.resolve(mapCSVCache) : fetch(MAP_CSV_URL).then(r => r.text()).then(csv => { mapCSVCache = csv; return csv; });
+    src.then(csv => {
+      const schools = parseMapCSV(csv).filter(s => !isNaN(s.lat) && !isNaN(s.lng));
+      schools.forEach((s, i) => {
+        const delay = Math.min(i * 6, 1800);
+        const icon = L.divIcon({ className: '', html: `<div class="member-dot" style="animation-delay:${delay}ms,${delay+500}ms"></div>`, iconSize:[10,10], iconAnchor:[5,5] });
+        L.marker([s.lat, s.lng], { icon }).addTo(previewMapInstance);
+      });
+    }).catch(e => console.warn('Preview map error:', e));
+  });
+}
+
+function initMemberMap() {
+  if (memberMapInstance) return;
+  loadLeaflet(renderMemberMap);
 }
 
 function renderMemberMap() {
@@ -1098,8 +1127,8 @@ function renderMemberMap() {
     .setView(mapCenter, mapZoom);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 })
     .addTo(memberMapInstance);
-  fetch(MAP_CSV_URL)
-    .then(r => r.text())
+  const src = mapCSVCache ? Promise.resolve(mapCSVCache) : fetch(MAP_CSV_URL).then(r => r.text()).then(csv => { mapCSVCache = csv; return csv; });
+  src
     .then(csv => {
       const schools = parseMapCSV(csv).filter(s => !isNaN(s.lat) && !isNaN(s.lng));
       let idx = 0;
@@ -1140,6 +1169,8 @@ function parseMapCSV(text) {
   return rows;
 }
 </script>
+
+<script>window.addEventListener('load', initPreviewMap);</script>
 
 <!-- Confetti overlay -->
 <div id="confettiOverlay" style="display:none;position:fixed;inset:0;z-index:9999;pointer-events:none;">
